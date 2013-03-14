@@ -1,6 +1,7 @@
 package liu.ida.emiva760.tddc69.projekt;
 
 //TODO: Change this class so that it only contains what's common for the different brick types
+//TODO: Perhaps I should make a BrickMaker type class that creates different brick types
 
 import javax.swing.ImageIcon;
 import java.net.URL;
