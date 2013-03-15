@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -21,6 +22,9 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 	private int score = 0;
     private int lives = 3;
+
+    private static Random randomNo = new Random();
+    private int blockType;
 
 	private String scoreString = "Score: " + Integer.toString(score);
     private String livesString = "Lives: " + Integer.toString(lives);
@@ -49,7 +53,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 		
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 6; j++) {
-				bricks[brickIndex] = new Brick(j*40+30, i*10+50);
+                blockType = randomNo.nextInt(3);
+				bricks[brickIndex] = new Brick(j*40+30, i*10+50, blockType);
 				brickIndex++;
 			}
 		}
