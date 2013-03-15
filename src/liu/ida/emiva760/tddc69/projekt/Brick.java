@@ -36,7 +36,11 @@ public class Brick extends GameObject {
 
 	public void setDestroyed(boolean destroyed)
 	{
-		this.destroyed = destroyed;
+        if (health == 0) {
+            this.destroyed = destroyed;
+        } else {
+            health--;
+        }
 	}
 
     private void selectImage(int type) {
@@ -45,7 +49,7 @@ public class Brick extends GameObject {
                 brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/brick.png");
                 break;
             case 1:
-                brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/solidbrick.png");
+                makeSolid();
                 break;
             case 2:
                 brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/explosivebrick.png");
@@ -54,5 +58,14 @@ public class Brick extends GameObject {
                 brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/brick.png");
                 break;
         }
+    }
+
+    private void makeSolid() {
+        brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/solidbrick.png");
+        health = 3;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }
