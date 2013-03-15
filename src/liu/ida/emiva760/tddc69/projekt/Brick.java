@@ -68,4 +68,8 @@ public class Brick extends GameObject {
     public int getHealth() {
         return health;
     }
+
+    public int getType() {
+        return type;
+    }
 }

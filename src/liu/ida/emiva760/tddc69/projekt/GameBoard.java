@@ -124,7 +124,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 		gameRunning = false;
 		gameTimer.cancel();
 	}
-	
+	//TODO: Look through collision detection. Should probably divide it into subroutines
 	public void checkCollision() {
 		if (ball.getRect().getMaxY() > SharedConstants.BOTTOM) {
             if (lives == 0) {
@@ -215,7 +215,18 @@ public class GameBoard extends JPanel implements SharedConstants {
 					}
 
 					bricks[i].setDestroyed(true);
-					score += 100;
+
+                    if (bricks[i].getType() == 0) {
+                        score += 100;
+                    }
+                    //TODO: Fix so that it gives the points only when destroyed
+                    else if (bricks[i].getType() == 1 && bricks[i].getHealth() == 0) {
+                        score += 150;
+                    }
+                    else if (bricks[i].getType() == 2) {
+                        score += 200;
+                    }
+
 					scoreString = "Score: " + Integer.toString(score);
 				}
 			}
