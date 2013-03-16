@@ -224,8 +224,11 @@ public class GameBoard extends JPanel implements SharedConstants {
                         score += 150;
                     }
                     else if (bricks[i].getType() == 2) {
+                        //TODO: Add the explosive effect here. Think about points
                         score += 200;
                     }
+
+                    //TODO: I can probably place the powerup making methods around here (use rands)
 
 					scoreString = "Score: " + Integer.toString(score);
 				}
