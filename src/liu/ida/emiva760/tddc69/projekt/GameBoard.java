@@ -220,8 +220,9 @@ public class GameBoard extends JPanel implements SharedConstants {
                         score += 100;
                     }
                     //TODO: Fix so that it gives the points only when destroyed
+                    //Currently it gives points the strike before and when it's destroyed
                     else if (bricks[i].getType() == 1 && bricks[i].getHealth() == 0) {
-                        score += 150;
+                        score += 50;
                     }
                     else if (bricks[i].getType() == 2) {
                         //TODO: Add the explosive effect here. Think about points
@@ -235,4 +236,31 @@ public class GameBoard extends JPanel implements SharedConstants {
 			}
 		}
 	}
+
+
+    /*
+    private void explode() {
+        if blockAbove()
+    }
+
+    private void totalDestruction() {
+
+    }
+
+    private boolean blockAbove() {
+        return
+    }
+
+    private boolean blockBelow() {
+
+    }
+
+    private boolean blockLeft() {
+
+    }
+
+    private boolean blockRight() {
+
+    }
+    */
 }
