@@ -29,6 +29,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 
     private static Random powerRand = new Random();
     private int powerType;
+    // The type of the currently spawned powerUp
+    private int localPowerType;
 
     private static Random destroyedBlockRand = new Random();
     private int randomSpawnPower;
@@ -93,7 +95,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                             bricks[i].getY(), bricks[i].getWidth(),
                             bricks[i].getHeight(), this);
                 } else {
-                    if (bricks[i].getType() != 1 && randomSpawnPower == 1) {
+                    if (bricks[i].getType() != 1 && powerUp != null) {
                         g2.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(),
                                 powerUp.getWidth(), powerUp.getHeight(), this);
                     }
@@ -131,9 +133,13 @@ public class GameBoard extends JPanel implements SharedConstants {
             powerType = powerRand.nextInt(3);
             randomSpawnPower = destroyedBlockRand.nextInt(10);
             if (powerUp != null) {
-                powerUp.move();
+                if (!pickedUpPower()) {
+                    powerUp.move();
+                } else {
+                    usePowerUp(localPowerType);
+                    powerUp = null;
+                }
             }
-
 			checkCollision();
 			repaint();
 		}
@@ -251,6 +257,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                     //TODO: I can probably place the powerup making methods around here (use rands)
                     if (bricks[i].getType() != 1 && randomSpawnPower == 1) {
                         createPowerUp(bricks[i].getX(), bricks[i].getY(), powerType);
+                        localPowerType = powerType;
                     }
 
 					scoreString = "Score: " + Integer.toString(score);
@@ -278,8 +285,30 @@ public class GameBoard extends JPanel implements SharedConstants {
         scoreString = "Score: " + Integer.toString(score);
     }
 
+    private void usePowerUp(int type) {
+        if (type == 0) {
+            useExtraPoints();
+        }
+        else if (type == 1) {
+            useExtraLife();
+        } else {
+            useLoseLife();
+        }
+    }
+
     private void createPowerUp(int x, int y, int type) {
         powerUp = new PowerUp(x, y, type);
+    }
+
+    // Did the powerup collide with the paddle?
+    private boolean pickedUpPower() {
+        if (powerUp.getY() == paddle.getY()) {
+            if (powerUp.getX() >= paddle.getX()) {
+                return powerUp.getX() <= paddle.getX() + paddle.getWidth();
+            }
+            return powerUp.getX() + powerUp.getWidth() >= paddle.getX();
+        }
+        return false;
     }
 
 
