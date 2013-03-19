@@ -26,6 +26,8 @@ public class GameBoard extends JPanel implements SharedConstants {
     private static Random randomNo = new Random();
     private int blockType;
 
+    private static Random powerRand = new Random();
+
 	private String scoreString = "Score: " + Integer.toString(score);
     private String livesString = "Lives: " + Integer.toString(lives);
 	//int gameTimerID;
