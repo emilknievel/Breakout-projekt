@@ -13,7 +13,6 @@ public class PowerUp extends GameObject implements SharedConstants {
         this.y = y;
 		yDir = 1;
         this.type = type;
-		y += yDir;
 
         selectImage(type);
         ImageIcon icon = new ImageIcon(powerup);
@@ -42,5 +41,9 @@ public class PowerUp extends GameObject implements SharedConstants {
 
     public int getType() {
         return type;
+    }
+
+    public void move() {
+        y += yDir;
     }
 }

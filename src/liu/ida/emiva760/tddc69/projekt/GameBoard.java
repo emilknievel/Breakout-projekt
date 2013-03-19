@@ -239,6 +239,25 @@ public class GameBoard extends JPanel implements SharedConstants {
 		}
 	}
 
+    private void useExtraife() {
+        lives += 1;
+        livesString = "Lives: " + Integer.toString(lives);
+    }
+
+    private void useLoseLife() {
+        if (lives == 0) {
+            stopGame();
+        } else {
+            lives -= 1;
+            livesString = "Lives: " + Integer.toString(lives);
+        }
+    }
+
+    private void useExtraPoints() {
+        score += 300;
+        scoreString = "Score: " + Integer.toString(score);
+    }
+
 
     /*
     private void explode() {
