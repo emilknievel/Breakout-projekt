@@ -17,6 +17,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 	Ball ball;
 	Paddle paddle;
 	Brick bricks[];
+    PowerUp powerUp;
 	
 	boolean gameRunning = true;
 
@@ -27,6 +28,7 @@ public class GameBoard extends JPanel implements SharedConstants {
     private int blockType;
 
     private static Random powerRand = new Random();
+    private int powerType;
 
 	private String scoreString = "Score: " + Integer.toString(score);
     private String livesString = "Lives: " + Integer.toString(lives);
@@ -117,6 +119,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 		public void run() {
 			ball.move();
 			paddle.move();
+            powerType = powerRand.nextInt(3);
 			checkCollision();
 			repaint();
 		}
@@ -256,6 +259,17 @@ public class GameBoard extends JPanel implements SharedConstants {
     private void useExtraPoints() {
         score += 300;
         scoreString = "Score: " + Integer.toString(score);
+    }
+
+    private void createPowerUp(int type) {
+        if (type == 0) {
+
+        }
+        else if (type == 1) {
+
+        } else {
+
+        }
     }
 
 
