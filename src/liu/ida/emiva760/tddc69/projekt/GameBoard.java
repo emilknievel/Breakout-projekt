@@ -30,6 +30,9 @@ public class GameBoard extends JPanel implements SharedConstants {
     private static Random powerRand = new Random();
     private int powerType;
 
+    private static Random destroyedBlockRand = new Random();
+    private int randomSpawnPower;
+
 	private String scoreString = "Score: " + Integer.toString(score);
     private String livesString = "Lives: " + Integer.toString(lives);
 	//int gameTimerID;
@@ -85,10 +88,16 @@ public class GameBoard extends JPanel implements SharedConstants {
 					paddle.getWidth(), paddle.getHeight(), this);
 
 			for (int i = 0; i < 30; i++) {
-				if (!bricks[i].isDestroyed())
-					g2.drawImage(bricks[i].getImage(), bricks[i].getX(),
-							bricks[i].getY(), bricks[i].getWidth(),
-							bricks[i].getHeight(), this);
+				if (!bricks[i].isDestroyed()) {
+                    g2.drawImage(bricks[i].getImage(), bricks[i].getX(),
+                            bricks[i].getY(), bricks[i].getWidth(),
+                            bricks[i].getHeight(), this);
+                } else {
+                    if (bricks[i].getType() != 1 && randomSpawnPower == 1) {
+                        g2.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(),
+                                powerUp.getWidth(), powerUp.getHeight(), this);
+                    }
+                }
 			}
 		} else {
 			Font font = new Font("Sans", Font.BOLD, 11);
@@ -120,6 +129,11 @@ public class GameBoard extends JPanel implements SharedConstants {
 			ball.move();
 			paddle.move();
             powerType = powerRand.nextInt(3);
+            randomSpawnPower = destroyedBlockRand.nextInt(10);
+            if (powerUp != null) {
+                powerUp.move();
+            }
+
 			checkCollision();
 			repaint();
 		}
@@ -235,6 +249,9 @@ public class GameBoard extends JPanel implements SharedConstants {
                     }
 
                     //TODO: I can probably place the powerup making methods around here (use rands)
+                    if (bricks[i].getType() != 1 && randomSpawnPower == 1) {
+                        createPowerUp(bricks[i].getX(), bricks[i].getY(), powerType);
+                    }
 
 					scoreString = "Score: " + Integer.toString(score);
 				}
@@ -261,15 +278,8 @@ public class GameBoard extends JPanel implements SharedConstants {
         scoreString = "Score: " + Integer.toString(score);
     }
 
-    private void createPowerUp(int type) {
-        if (type == 0) {
-
-        }
-        else if (type == 1) {
-
-        } else {
-
-        }
+    private void createPowerUp(int x, int y, int type) {
+        powerUp = new PowerUp(x, y, type);
     }
 
 
