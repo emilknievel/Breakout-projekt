@@ -255,7 +255,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                         score += 200;
                     }
 
-                    //TODO: I can probably place the powerup making methods around here (use rands)
+
                     if (bricks[i].getType() != 1 && randomSpawnPower < 6) {
                         createPowerUp(bricks[i].getX(), bricks[i].getY(), powerType);
                         localPowerType = powerType;
