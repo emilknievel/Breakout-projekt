@@ -22,7 +22,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 	boolean gameRunning = true;
 
 	private int score = 0;
-    private int lives = 3;
+    private int lives = 2;
 
     private static Random randomNo = new Random();
     private int blockType;
