@@ -256,7 +256,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                     }
 
 
-                    if (bricks[i].getType() != 1 && randomSpawnPower < 6) {
+                    if (bricks[i].getType() != 1 && randomSpawnPower < 4) {
                         createPowerUp(bricks[i].getX(), bricks[i].getY(), powerType);
                         localPowerType = powerType;
                     }
