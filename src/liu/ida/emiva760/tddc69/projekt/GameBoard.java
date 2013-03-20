@@ -29,8 +29,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 
     private static Random powerRand = new Random();
     private int powerType;
-    // The type of the currently spawned powerUp
-    private int localPowerType;
+    private int localPowerType; // The type of the currently spawned powerUp
 
     private static Random destroyedBlockRand = new Random();
     private int randomSpawnPower;
