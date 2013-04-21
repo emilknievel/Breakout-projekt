@@ -114,7 +114,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 		Toolkit.getDefaultToolkit().sync();
 		g2.dispose();
 	}
-	
+
 	private class TAdapter extends KeyAdapter {
 		public void keyReleased(KeyEvent e) {
 			paddle.keyReleased(e);
@@ -149,6 +149,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 		gameRunning = false;
 		gameTimer.cancel();
 	}
+
 	//TODO: Look through collision detection. Should probably divide it into subroutines
 	public void checkCollision() {
 		if (ball.getRect().getMaxY() > SharedConstants.BOTTOM) {
@@ -244,6 +245,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                     if (bricks[i].getType() == 0) {
                         score += 100;
                     }
+
                     //TODO: Fix so that it gives the points only when destroyed
                     //Currently it gives points the strike before and when it's destroyed
                     else if (bricks[i].getType() == 1 && bricks[i].getHealth() == 0) {
