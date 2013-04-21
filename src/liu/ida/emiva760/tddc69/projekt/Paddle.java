@@ -54,13 +54,11 @@ public class Paddle extends GameObject implements SharedConstants {
 		}
 	}
 
-    //TODO: Place the starting position in the middle
-
     /**
      * Place at starting position
      */
 	public void resetState() {
-		x = 200;
+		x = SharedConstants.WIDTH / 2 - width;
 		y = 360;
 	}
 }

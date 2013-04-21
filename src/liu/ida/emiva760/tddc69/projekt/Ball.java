@@ -43,15 +43,13 @@ public class Ball extends GameObject implements SharedConstants {
 		}
 	}
 
-    //TODO: Place the starting position in the middle
-
     /**
      * Place at starting position
      */
 	public void resetState() 
 	{
-		x = 230;
-		y = 355;
+		x = SharedConstants.WIDTH / 2 - width;
+		y = 340;
 	}
 
 	public void setXDir(int x)
