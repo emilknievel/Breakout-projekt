@@ -8,6 +8,6 @@ public interface SharedConstants {
 	public static final int PADDLE_RIGHT = 250; /* How far to the right the
 	                                               paddle can reach */
 
-	public static final int BALL_RIGHT = 280; /* How far to the right the
+	public static final int BALL_RIGHT = 290; /* How far to the right the
 	                                             ball can reach */
 }

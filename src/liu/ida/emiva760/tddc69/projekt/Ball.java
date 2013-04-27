@@ -49,7 +49,7 @@ public class Ball extends GameObject implements SharedConstants {
 	public void resetState() 
 	{
 		x = SharedConstants.WIDTH / 2 - width;
-		y = 340;
+		y = 350;
 	}
 
 	public void setXDir(int x)

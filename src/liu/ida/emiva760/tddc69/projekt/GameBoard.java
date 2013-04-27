@@ -3,15 +3,12 @@ package liu.ida.emiva760.tddc69.projekt;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
-
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements SharedConstants {
-	//Image sprite;
 	Timer gameTimer;
 	String message = "Game Over! ";
 	Ball ball;
@@ -36,7 +33,6 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 	private String scoreString = "Score: " + Integer.toString(score);
     private String livesString = "Lives: " + Integer.toString(lives);
-	//int gameTimerID;
 
 	public GameBoard() {
 		addKeyListener(new TAdapter());
