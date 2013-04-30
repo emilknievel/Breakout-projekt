@@ -255,26 +255,8 @@ public class GameBoard extends JPanel implements SharedConstants {
                             score += 50;
                         }
                         else if (bricks[i][j].getType() == 2) {
-                            //TODO: Add the explosive effect here. Think about points
-
-                            // New stuff
-                            // ============================================================
-                        /*
-                        If j == 0, don't check to the left of the block
-                        If j == 5, don't check to the right of the block
-
-                        If i == 0, don't check above the block
-                        If i == 4, don't check below the block
-
-                        Assuming everything above is correct:
-                            Do the check:
-                                If i == 0 && j == 0:
-                                    check a[i+1][j] (the one below)
-                                    check a[i][j+1] (the one to the right)
-                        */
-                            // ============================================================
-
-                            score += 200;
+                            destroyNeighbors(bricks, i, j);
+                            score += 100;
                         }
 
 
@@ -338,29 +320,55 @@ public class GameBoard extends JPanel implements SharedConstants {
     }
 
 
-    /*
-    private void explode() {
-        if blockAbove()
+
+    private void destroyNeighbors(Brick[][] array, int i, int j) {
+        if (isBlockAbove(array, i, j)) {
+            /*if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
+                destroyNeighbors(array, i - 1, j);
+            }*/
+            array[i - 1][j].blowUp();
+            score += 100;
+        }
+
+        if (isBlockBelow(array, i, j)) {
+            /*if (array[i + 1][j].getType() == 2) {
+                destroyNeighbors(array, i + 1, j);
+            }*/
+            array[i + 1][j].blowUp();
+            score += 100;
+        }
+
+        if (isBlockLeft(array, i, j)) {
+            /*if (array[i][j - 1].getType() == 2) {
+                destroyNeighbors(array, i, j - 1);
+            }*/
+            array[i][j - 1].blowUp();
+            score += 100;
+        }
+
+        if (isBlockRight(array, i, j)) {
+            /*if (array[i][j + 1].getType() == 2) {
+                destroyNeighbors(array, i, j + 1);
+            }*/
+            array[i][j + 1].blowUp();
+            score += 100;
+        }
     }
 
-    private void totalDestruction() {
-
+    private boolean isBlockAbove(Brick[][] array, int i, int j) {
+        return i > 0 && (array[i - 1][j] != null);
     }
 
-    private boolean blockAbove() {
-        return bricks[i-1][j] yadda yadda
+    private boolean isBlockBelow(Brick[][] array, int i, int j) {
+        return i < 4 && (array[i + 1][j] != null);
     }
 
-    private boolean blockBelow() {
-        return bricks[i+1][j]
+    private boolean isBlockLeft(Brick[][] array, int i, int j) {
+        return j > 0 && (array[i][j - 1] != null);
     }
 
-    private boolean blockLeft() {
-        return bricks[i][j-1]
+    private boolean isBlockRight(Brick[][] array, int i, int j) {
+        return j < 5 && (array[i][j + 1] != null);
     }
 
-    private boolean blockRight() {
-        return bricks[i][j+1]
-    }
-    */
 }
