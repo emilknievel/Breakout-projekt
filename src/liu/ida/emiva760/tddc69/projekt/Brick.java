@@ -40,6 +40,10 @@ public class Brick extends GameObject {
         }
 	}
 
+    public void blowUp() {
+        this.destroyed = true;
+    }
+
     private void selectImage(int type) {
         switch (type) {
             case 0:
