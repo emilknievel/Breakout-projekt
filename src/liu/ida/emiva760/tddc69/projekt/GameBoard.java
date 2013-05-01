@@ -322,53 +322,54 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 
     private void destroyNeighbors(Brick[][] array, int i, int j) {
+        array[i][j].blowUp();
         if (isBlockAbove(array, i, j)) {
-            /*if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
+            if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
                 destroyNeighbors(array, i - 1, j);
-            }*/
+            }
             array[i - 1][j].blowUp();
             score += 100;
         }
 
         if (isBlockBelow(array, i, j)) {
-            /*if (array[i + 1][j].getType() == 2) {
+            if (array[i + 1][j].getType() == 2) {
                 destroyNeighbors(array, i + 1, j);
-            }*/
+            }
             array[i + 1][j].blowUp();
             score += 100;
         }
 
         if (isBlockLeft(array, i, j)) {
-            /*if (array[i][j - 1].getType() == 2) {
+            if (array[i][j - 1].getType() == 2) {
                 destroyNeighbors(array, i, j - 1);
-            }*/
+            }
             array[i][j - 1].blowUp();
             score += 100;
         }
 
         if (isBlockRight(array, i, j)) {
-            /*if (array[i][j + 1].getType() == 2) {
+            if (array[i][j + 1].getType() == 2) {
                 destroyNeighbors(array, i, j + 1);
-            }*/
+            }
             array[i][j + 1].blowUp();
             score += 100;
         }
     }
 
     private boolean isBlockAbove(Brick[][] array, int i, int j) {
-        return i > 0 && (array[i - 1][j] != null);
+        return i > 0 && (!array[i - 1][j].isDestroyed());
     }
 
     private boolean isBlockBelow(Brick[][] array, int i, int j) {
-        return i < 4 && (array[i + 1][j] != null);
+        return i < 4 && (!array[i + 1][j].isDestroyed());
     }
 
     private boolean isBlockLeft(Brick[][] array, int i, int j) {
-        return j > 0 && (array[i][j - 1] != null);
+        return j > 0 && (!array[i][j - 1].isDestroyed());
     }
 
     private boolean isBlockRight(Brick[][] array, int i, int j) {
-        return j < 5 && (array[i][j + 1] != null);
+        return j < 5 && (!array[i][j + 1].isDestroyed());
     }
 
 }
