@@ -151,66 +151,194 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 	//TODO: Look through collision detection. Should probably divide it into subroutines
 	public void checkCollision() {
-		if (ball.getRect().getMaxY() > SharedConstants.BOTTOM) {
+        ballMissed();
+
+        int destroyedBlocksCounter = 0;
+        checkWinCondition(destroyedBlocksCounter);
+
+        ballPaddleCollision();
+
+        ballBrickCollision();
+	}
+
+    private void useExtraLife() {
+        lives += 1;
+        livesString = "Lives: " + Integer.toString(lives);
+    }
+
+    private void useLoseLife() {
+        if (lives == 0) {
+            stopGame();
+        } else {
+            lives -= 1;
+            livesString = "Lives: " + Integer.toString(lives);
+        }
+    }
+
+    private void useExtraPoints() {
+        score += 300;
+        scoreString = "Score: " + Integer.toString(score);
+    }
+
+    private void usePowerUp(int type) {
+        if (type == 0) {
+            useExtraPoints();
+        }
+        else if (type == 1) {
+            useExtraLife();
+        } else {
+            useLoseLife();
+        }
+    }
+
+    private void createPowerUp(int x, int y, int type) {
+        powerUp = new PowerUp(x, y, type);
+    }
+
+    // Did the powerup collide with the paddle?
+    private boolean pickedUpPower() {
+        if (powerUp.getY() == paddle.getY()) {
+            if (powerUp.getX() >= paddle.getX()) {
+                return powerUp.getX() <= paddle.getX() + paddle.getWidth();
+            }
+            return powerUp.getX() + powerUp.getWidth() >= paddle.getX();
+        }
+        return false;
+    }
+
+    /**
+     * Destroy neighboring bricks.
+     */
+    private void destroyNeighbors(Brick[][] array, int i, int j) {
+        array[i][j].blowUp();
+        if (isBlockAbove(array, i, j)) {
+            if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
+                destroyNeighbors(array, i - 1, j);
+            }
+            array[i - 1][j].blowUp();
+            score += 100;
+        }
+
+        if (isBlockBelow(array, i, j)) {
+            if (array[i + 1][j].getType() == 2) {
+                destroyNeighbors(array, i + 1, j);
+            }
+            array[i + 1][j].blowUp();
+            score += 100;
+        }
+
+        if (isBlockLeft(array, i, j)) {
+            if (array[i][j - 1].getType() == 2) {
+                destroyNeighbors(array, i, j - 1);
+            }
+            array[i][j - 1].blowUp();
+            score += 100;
+        }
+
+        if (isBlockRight(array, i, j)) {
+            if (array[i][j + 1].getType() == 2) {
+                destroyNeighbors(array, i, j + 1);
+            }
+            array[i][j + 1].blowUp();
+            score += 100;
+        }
+    }
+
+    private boolean isBlockAbove(Brick[][] array, int i, int j) {
+        return i > 0 && (!array[i - 1][j].isDestroyed());
+    }
+
+    private boolean isBlockBelow(Brick[][] array, int i, int j) {
+        return i < 4 && (!array[i + 1][j].isDestroyed());
+    }
+
+    private boolean isBlockLeft(Brick[][] array, int i, int j) {
+        return j > 0 && (!array[i][j - 1].isDestroyed());
+    }
+
+    private boolean isBlockRight(Brick[][] array, int i, int j) {
+        return j < 5 && (!array[i][j + 1].isDestroyed());
+    }
+
+    /**
+     * Lose 1 life if the ball has reached the bottom
+     */
+    private void ballMissed() {
+        if (ball.getRect().getMaxY() > SharedConstants.BOTTOM) {
             if (lives == 0) {
                 stopGame();
             } else {
                 nextLife();
                 livesString = "Lives: " + Integer.toString(lives);
             }
-		}
+        }
+    }
 
-        int destroyedBlocksCounter = 0;
+    /**
+     * Check if the game is won.
+     */
+    private void checkWinCondition(int blocksDestroyed) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if (bricks[i][j].isDestroyed()) {
-                    destroyedBlocksCounter++;
+                    blocksDestroyed++;
                 }
 
-                if (destroyedBlocksCounter == 30) {
+                if (blocksDestroyed == 30) {
                     message = "You win! ";
                     stopGame();
                 }
             }
         }
-		
-		if ((ball.getRect()).intersects(paddle.getRect())) {
+    }
 
-			int paddleLPos = (int)paddle.getRect().getMinX();
-			int ballLPos = (int)ball.getRect().getMinX();
+    /**
+     * Adjust the direction of the ball relating to where it hits the paddle.
+     */
+    private void ballPaddleCollision() {
+        if ((ball.getRect()).intersects(paddle.getRect())) {
 
-			int first = paddleLPos + 8;
-			int second = paddleLPos + 16;
-			int third = paddleLPos + 24;
-			int fourth = paddleLPos + 32;
+            int paddleLPos = (int)paddle.getRect().getMinX();
+            int ballLPos = (int)ball.getRect().getMinX();
 
-			if (ballLPos < first) {
-				ball.setXDir(-1);
-				ball.setYDir(-1);
-			}
+            int first = paddleLPos + 8;
+            int second = paddleLPos + 16;
+            int third = paddleLPos + 24;
+            int fourth = paddleLPos + 32;
 
-			if (ballLPos >= first && ballLPos < second) {
-				ball.setXDir(-1);
-				ball.setYDir(-1 * ball.getYDir());
-			}
+            if (ballLPos < first) {
+                ball.setXDir(-1);
+                ball.setYDir(-1);
+            }
 
-			if (ballLPos >= second && ballLPos < third) {
-				ball.setXDir(0);
-				ball.setYDir(-1);
-			}
+            if (ballLPos >= first && ballLPos < second) {
+                ball.setXDir(-1);
+                ball.setYDir(-1 * ball.getYDir());
+            }
 
-			if (ballLPos >= third && ballLPos < fourth) {
-				ball.setXDir(1);
-				ball.setYDir(-1 * ball.getYDir());
-			}
+            if (ballLPos >= second && ballLPos < third) {
+                ball.setXDir(0);
+                ball.setYDir(-1);
+            }
 
-			if (ballLPos > fourth) {
-				ball.setXDir(1);
-				ball.setYDir(-1);
-			}
-		}
+            if (ballLPos >= third && ballLPos < fourth) {
+                ball.setXDir(1);
+                ball.setYDir(-1 * ball.getYDir());
+            }
 
-		for (int i = 0; i < 5; i++) {
+            if (ballLPos > fourth) {
+                ball.setXDir(1);
+                ball.setYDir(-1);
+            }
+        }
+    }
+
+    /**
+     * Adjust the direction of the ball relating to where it hits a brick.
+     * Destroy the brick.
+     */
+    private void ballBrickCollision() {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if ((ball.getRect()).intersects(bricks[i][j].getRect())) {
 
@@ -269,107 +397,7 @@ public class GameBoard extends JPanel implements SharedConstants {
                     }
                 }
             }
-
-		}
-
-	}
-
-    private void useExtraLife() {
-        lives += 1;
-        livesString = "Lives: " + Integer.toString(lives);
-    }
-
-    private void useLoseLife() {
-        if (lives == 0) {
-            stopGame();
-        } else {
-            lives -= 1;
-            livesString = "Lives: " + Integer.toString(lives);
         }
-    }
-
-    private void useExtraPoints() {
-        score += 300;
-        scoreString = "Score: " + Integer.toString(score);
-    }
-
-    private void usePowerUp(int type) {
-        if (type == 0) {
-            useExtraPoints();
-        }
-        else if (type == 1) {
-            useExtraLife();
-        } else {
-            useLoseLife();
-        }
-    }
-
-    private void createPowerUp(int x, int y, int type) {
-        powerUp = new PowerUp(x, y, type);
-    }
-
-    // Did the powerup collide with the paddle?
-    private boolean pickedUpPower() {
-        if (powerUp.getY() == paddle.getY()) {
-            if (powerUp.getX() >= paddle.getX()) {
-                return powerUp.getX() <= paddle.getX() + paddle.getWidth();
-            }
-            return powerUp.getX() + powerUp.getWidth() >= paddle.getX();
-        }
-        return false;
-    }
-
-
-
-    private void destroyNeighbors(Brick[][] array, int i, int j) {
-        array[i][j].blowUp();
-        if (isBlockAbove(array, i, j)) {
-            if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
-                destroyNeighbors(array, i - 1, j);
-            }
-            array[i - 1][j].blowUp();
-            score += 100;
-        }
-
-        if (isBlockBelow(array, i, j)) {
-            if (array[i + 1][j].getType() == 2) {
-                destroyNeighbors(array, i + 1, j);
-            }
-            array[i + 1][j].blowUp();
-            score += 100;
-        }
-
-        if (isBlockLeft(array, i, j)) {
-            if (array[i][j - 1].getType() == 2) {
-                destroyNeighbors(array, i, j - 1);
-            }
-            array[i][j - 1].blowUp();
-            score += 100;
-        }
-
-        if (isBlockRight(array, i, j)) {
-            if (array[i][j + 1].getType() == 2) {
-                destroyNeighbors(array, i, j + 1);
-            }
-            array[i][j + 1].blowUp();
-            score += 100;
-        }
-    }
-
-    private boolean isBlockAbove(Brick[][] array, int i, int j) {
-        return i > 0 && (!array[i - 1][j].isDestroyed());
-    }
-
-    private boolean isBlockBelow(Brick[][] array, int i, int j) {
-        return i < 4 && (!array[i + 1][j].isDestroyed());
-    }
-
-    private boolean isBlockLeft(Brick[][] array, int i, int j) {
-        return j > 0 && (!array[i][j - 1].isDestroyed());
-    }
-
-    private boolean isBlockRight(Brick[][] array, int i, int j) {
-        return j < 5 && (!array[i][j + 1].isDestroyed());
     }
 
 }
