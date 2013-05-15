@@ -20,6 +20,10 @@ public class Paddle extends GameObject implements SharedConstants {
 
     }
 
+    /**
+     * Move the paddle with regards to keys pressed and whether the paddle
+     * reaches an edge.
+     */
     public void move() {
         x += xDir;
         if (x <= 2)
@@ -28,6 +32,9 @@ public class Paddle extends GameObject implements SharedConstants {
 			x = SharedConstants.PADDLE_RIGHT;
 	}
 
+    /**
+     * Move the paddle while the left or right key is pressed.
+     */
 	public void keyPressed(KeyEvent e) {
 
 		int key = e.getKeyCode();
@@ -42,6 +49,9 @@ public class Paddle extends GameObject implements SharedConstants {
 		}
 	}
 
+    /**
+     * Stop moving the paddle when letting go of the keys.
+     */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
