@@ -25,6 +25,9 @@ public class Ball extends GameObject implements SharedConstants {
 	}
 
 
+    /**
+     * Move the ball and bounce off the top and sides of the board.
+     */
 	public void move()
 	{
 		x += xDir;

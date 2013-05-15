@@ -57,9 +57,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 6; j++) {
                 blockType = randomNo.nextInt(3);
-				//bricks[brickIndex] = new Brick(j*50, i*30+50, blockType);
                 bricks[i][j] = new Brick(j*50, i*30+50, blockType);
-				//brickIndex++;
 			}
 		}
 	}
