@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class Paddle extends GameObject implements SharedConstants {
     URL paddle = Paddle.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/paddle.png");
 
-	int dx;
+	int xDir;
 
 	public Paddle() {
         ImageIcon icon = new ImageIcon(paddle);
@@ -21,7 +21,7 @@ public class Paddle extends GameObject implements SharedConstants {
     }
 
     public void move() {
-        x += dx;
+        x += xDir;
         if (x <= 2)
 			x = 2;
 		if (x >= SharedConstants.PADDLE_RIGHT)
@@ -33,12 +33,12 @@ public class Paddle extends GameObject implements SharedConstants {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_LEFT) {
-			dx = -2;
+			xDir = -2;
 
 		}
 
 		if (key == KeyEvent.VK_RIGHT) {
-			dx = 2;
+			xDir = 2;
 		}
 	}
 
@@ -46,11 +46,11 @@ public class Paddle extends GameObject implements SharedConstants {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_LEFT) {
-			dx = 0;
+			xDir = 0;
 		}
 
 		if (key == KeyEvent.VK_RIGHT) {
-			dx = 0;
+			xDir = 0;
 		}
 	}
 
