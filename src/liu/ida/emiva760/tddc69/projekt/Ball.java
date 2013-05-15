@@ -4,15 +4,15 @@ import javax.swing.ImageIcon;
 import java.net.URL;
 
 public class Ball extends GameObject implements SharedConstants {
-	private int xdir;
-	private int ydir;
+	private int xDir;
+	private int yDir;
 
     protected URL ball = Ball.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/ball.png");
 
 	public Ball() {
 
-		xdir = 1;
-		ydir = -1;
+		xDir = 1;
+		yDir = -1;
 
         ImageIcon icon = new ImageIcon(ball);
 		image = icon.getImage();
@@ -27,8 +27,8 @@ public class Ball extends GameObject implements SharedConstants {
 
 	public void move()
 	{
-		x += xdir;
-		y += ydir;
+		x += xDir;
+		y += yDir;
 
 		if (x == 0) {
 			setXDir(1);
@@ -54,16 +54,16 @@ public class Ball extends GameObject implements SharedConstants {
 
 	public void setXDir(int x)
 	{
-		xdir = x;
+		xDir = x;
 	}
 
 	public void setYDir(int y)
 	{
-		ydir = y;
+		yDir = y;
 	}
 
 	public int getYDir()
 	{
-		return ydir;
+		return yDir;
 	}
 }
