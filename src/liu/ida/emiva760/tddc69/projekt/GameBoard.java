@@ -147,7 +147,6 @@ public class GameBoard extends JPanel implements SharedConstants {
 		gameTimer.cancel();
 	}
 
-	//TODO: Look through collision detection. Should probably divide it into subroutines
 	public void checkCollision() {
         ballMissed();
 
@@ -193,6 +192,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         powerUp = new PowerUp(x, y, type);
     }
 
+    //TODO: Fix powerup spawning
     // Did the powerup collide with the paddle?
     private boolean pickedUpPower() {
         if (powerUp.getY() == paddle.getY()) {
@@ -205,7 +205,7 @@ public class GameBoard extends JPanel implements SharedConstants {
     }
 
     /**
-     * Destroy neighboring bricks.
+     * Destroy bricks neighboring to an explosive brick.
      */
     private void destroyNeighbors(Brick[][] array, int i, int j) {
         array[i][j].blowUp();
