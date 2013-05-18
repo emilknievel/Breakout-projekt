@@ -5,13 +5,13 @@ import java.net.URL;
 
 public class PowerUp extends GameObject implements SharedConstants {
     protected URL powerup;
-	private int yDir;
+    private int yDir;
     private int type;
-	
-	public PowerUp(int x, int y, int type) {
+
+    public PowerUp(int x, int y, int type) {
         this.x = x;
         this.y = y;
-		yDir = 1;
+        yDir = 0;   //should be still until a brick above it is destroyed
         this.type = type;
 
         selectImage(type);
@@ -20,7 +20,7 @@ public class PowerUp extends GameObject implements SharedConstants {
 
         width = image.getWidth(null);
         height = image.getHeight(null);
-	}
+    }
 
     private void selectImage(int type) {
         switch (type) {
@@ -45,5 +45,9 @@ public class PowerUp extends GameObject implements SharedConstants {
 
     public void move() {
         y += yDir;
+    }
+
+    public void triggerFall() {
+        yDir = 1;
     }
 }

@@ -9,145 +9,168 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements SharedConstants {
-	Timer gameTimer;
+    Timer gameTimer;
 	String message = "Game Over! ";
 	Ball ball;
 	Paddle paddle;
-    Brick bricks[][];
-    PowerUp powerUp;
+	Brick bricks[][];
+	PowerUp powers[][];
 	
 	boolean gameRunning = true;
 
 	private int score = 0;
-    private int lives = 2;
+	private int lives = 2;
 
-    private static Random randomNo = new Random();
-    private int blockType;
+	private static Random randomNo = new Random();
+	private int blockType;
+    private int spawnInt;
 
-    private static Random powerRand = new Random();
-    private int powerType;
-    private int localPowerType; // The type of the currently spawned powerUp
+	private static Random powerRand = new Random();
+	private int powerType;
+	private int localPowerType; // The type of the currently spawned powerUp
 
-    private static Random destroyedBlockRand = new Random();
-    private int randomSpawnPower;
+	private static Random destroyedBlockRand = new Random();
+	private int randomSpawnPower;
 
 	private String scoreString = "Score: " + Integer.toString(score);
-    private String livesString = "Lives: " + Integer.toString(lives);
+	private String livesString = "Lives: " + Integer.toString(lives);
 
 	public GameBoard() {
 		addKeyListener(new TAdapter());
 		setFocusable(true);
 
-        bricks = new Brick[5][6];
+		bricks = new Brick[5][6];
+
+        powers = new PowerUp[5][6];
+
 		setDoubleBuffered(true);
 		gameTimer = new Timer();
 		gameTimer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10);
 	}
-	
+
 	public void addNotify() {
 		super.addNotify();
 		gameInit();
 	}
-	
+
 	public void gameInit() {
 		ball = new Ball();
 		paddle = new Paddle();
 
-        // Place the blocks on 5 rows and 6 columns
+		// Place the blocks on 5 rows and 6 columns
+		// randomly place powerUps below blocks
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 6; j++) {
-                blockType = randomNo.nextInt(3);
-                bricks[i][j] = new Brick(j*50, i*30+50, blockType);
+                spawnInt = randomNo.nextInt(5);
+				blockType = randomNo.nextInt(3);
+                powerType = powerRand.nextInt(3);
+				//typ så här:
+                if (spawnInt == 1) {
+                    powers[i][j] = new PowerUp(j*50,i*30+50, powerType);
+                }
+				bricks[i][j] = new Brick(j*50, i*30+50, blockType);
 			}
 		}
 	}
 
-    public void nextLife() {
-        lives -= 1;
-        ball = new Ball();
-        paddle = new Paddle();
-    }
-	
+	public void nextLife() {
+		lives -= 1;
+		ball = new Ball();
+		paddle = new Paddle();
+	}
+
 	public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) g;
 		super.paint(g2);
 
 		if (gameRunning) {
 			// draws the text in the game
-			g2.drawString(scoreString, SharedConstants.WIDTH-SharedConstants.WIDTH/2, 10);
+			g2.drawString(scoreString,
+                    SharedConstants.WIDTH-SharedConstants.WIDTH/2, 10);
             g2.drawString(livesString, 10, 10);
-			
-			g2.drawImage(ball.getImage(), ball.getX(), ball.getY(),
-					ball.getWidth(), ball.getHeight(), this);
-			g2.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(),
-					paddle.getWidth(), paddle.getHeight(), this);
+
+            g2.drawImage(ball.getImage(), ball.getX(), ball.getY(),
+                    ball.getWidth(), ball.getHeight(), this);
+            g2.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(),
+                    paddle.getWidth(), paddle.getHeight(), this);
 
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 6; j++) {
+                    if (powers[i][j] != null) {
+                        g2.drawImage(
+                                powers[i][j].getImage(),
+                                powers[i][j].getX(), powers[i][j].getY(),
+                                powers[i][j].getWidth(),
+                                powers[i][j].getHeight(), this);
+                    }
                     if (!bricks[i][j].isDestroyed()) {
-                        g2.drawImage(bricks[i][j].getImage(), bricks[i][j].getX(),
-                                bricks[i][j].getY(), bricks[i][j].getWidth(),
+                        g2.drawImage(
+                                bricks[i][j].getImage(),
+                                bricks[i][j].getX(), bricks[i][j].getY(),
+                                bricks[i][j].getWidth(),
                                 bricks[i][j].getHeight(), this);
-                    } else {
-                        if (bricks[i][j].getType() != 1 && powerUp != null) {
-                            g2.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(),
-                                    powerUp.getWidth(), powerUp.getHeight(), this);
-                        }
                     }
                 }
-
             }
-		} else {
-			Font font = new Font("Sans", Font.BOLD, 11);
-			FontMetrics metrics = this.getFontMetrics(font);
+        } else {
+            Font font = new Font("Sans", Font.BOLD, 11);
+            FontMetrics metrics = this.getFontMetrics(font);
 
-			g2.setColor(Color.BLACK);
-			g2.setFont(font);
-			g2.drawString(message + scoreString,
-					(SharedConstants.WIDTH - metrics.stringWidth(message + scoreString))/2,
-					SharedConstants.WIDTH/2);
-		}
+            g2.setColor(Color.BLACK);
+            g2.setFont(font);
+            g2.drawString(
+                    message + scoreString,
+                    (SharedConstants.WIDTH -
+                            metrics.stringWidth(message + scoreString))/2,
+                    SharedConstants.WIDTH/2);
+        }
 
-		Toolkit.getDefaultToolkit().sync();
-		g2.dispose();
-	}
+        Toolkit.getDefaultToolkit().sync();
+        g2.dispose();
+    }
 
-	private class TAdapter extends KeyAdapter {
-		public void keyReleased(KeyEvent e) {
-			paddle.keyReleased(e);
-		}
-		
-		public void keyPressed(KeyEvent e) {
-			paddle.keyPressed(e);
-		}
-	}
-	
-	class ScheduleTask extends TimerTask {
-		public void run() {
-			ball.move();
-			paddle.move();
-            powerType = powerRand.nextInt(3);
-            randomSpawnPower = destroyedBlockRand.nextInt(10);
-            if (powerUp != null) {
-                if (!pickedUpPower()) {
-                    powerUp.move();
-                } else {
-                    usePowerUp(localPowerType);
-                    powerUp = null;
-                    repaint();
+    private class TAdapter extends KeyAdapter {
+        public void keyReleased(KeyEvent e) {
+            paddle.keyReleased(e);
+        }
+
+        public void keyPressed(KeyEvent e) {
+            paddle.keyPressed(e);
+        }
+    }
+
+    class ScheduleTask extends TimerTask {
+        public void run() {
+            ball.move();
+            paddle.move();
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 6; j++) {
+                    if (powers[i][j] != null) {
+                        powers[i][j].move();
+                    }
+                    if (pickedUpPower(powers[i][j])) {
+                        usePowerUp(powers[i][j].getType());
+                        powers[i][j] = null;
+                        repaint();
+                    }
+                    if (powers[i][j] != null && powers[i][j].getY() > SharedConstants.BOTTOM) {
+                        powers[i][j] = null;
+                        repaint();
+                    }
                 }
             }
-			checkCollision();
-			repaint();
-		}
-	}
-	
-	public void stopGame() {
-		gameRunning = false;
-		gameTimer.cancel();
-	}
 
-	public void checkCollision() {
+            checkCollision();
+            repaint();
+        }
+    }
+
+    public void stopGame() {
+        gameRunning = false;
+        gameTimer.cancel();
+    }
+
+    public void checkCollision() {
         ballMissed();
 
         int destroyedBlocksCounter = 0;
@@ -156,7 +179,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         ballPaddleCollision();
 
         ballBrickCollision();
-	}
+    }
 
     private void useExtraLife() {
         lives += 1;
@@ -188,14 +211,13 @@ public class GameBoard extends JPanel implements SharedConstants {
         }
     }
 
-    private void createPowerUp(int x, int y, int type) {
+    /*private void createPowerUp(int x, int y, int type) {
         powerUp = new PowerUp(x, y, type);
-    }
+    }*/
 
-    //TODO: Fix powerup spawning
     // Did the powerup collide with the paddle?
-    private boolean pickedUpPower() {
-        if (powerUp.getY() == paddle.getY()) {
+    private boolean pickedUpPower(PowerUp powerUp) {
+        if (powerUp != null && powerUp.getY() == paddle.getY()) {
             if (powerUp.getX() >= paddle.getX()) {
                 return powerUp.getX() <= paddle.getX() + paddle.getWidth();
             }
@@ -208,9 +230,14 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Destroy bricks neighboring to an explosive brick.
      */
     private void destroyNeighbors(Brick[][] array, int i, int j) {
+        if (powers[i][j] != null) {
+            powers[i][j].triggerFall();
+        }
+
         array[i][j].blowUp();
+
         if (isBlockAbove(array, i, j)) {
-            if (array[i - 1][j].getType() == 2) {   // is the block above explosive?
+            if (array[i - 1][j].getType() == 2) {   // above explosive?
                 destroyNeighbors(array, i - 1, j);
             }
             array[i - 1][j].blowUp();
@@ -223,6 +250,9 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i + 1][j].blowUp();
             score += 100;
+            if (powers[i + 1][j] != null) {
+                powers[i + 1][j].triggerFall();
+            }
         }
 
         if (isBlockLeft(array, i, j)) {
@@ -231,6 +261,9 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i][j - 1].blowUp();
             score += 100;
+            if (powers[i][j - 1] != null) {
+                powers[i][j - 1].triggerFall();
+            }
         }
 
         if (isBlockRight(array, i, j)) {
@@ -239,6 +272,9 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i][j + 1].blowUp();
             score += 100;
+            if (powers[i][j + 1] != null) {
+                powers[i][j + 1].triggerFall();
+            }
         }
     }
 
@@ -346,11 +382,11 @@ public class GameBoard extends JPanel implements SharedConstants {
                     int ballTop = (int)ball.getRect().getMinY();
 
                     Point pointRight =
-                            new Point(ballLeft + ballWidth + 1, ballTop);
+                        new Point(ballLeft + ballWidth + 1, ballTop);
                     Point pointLeft = new Point(ballLeft - 1, ballTop);
                     Point pointTop = new Point(ballLeft, ballTop - 1);
                     Point pointBottom =
-                            new Point(ballLeft, ballTop + ballHeight + 1);
+                        new Point(ballLeft, ballTop + ballHeight + 1);
 
                     if (!bricks[i][j].isDestroyed()) {
                         if (bricks[i][j].getRect().contains(pointRight)) {
@@ -373,24 +409,26 @@ public class GameBoard extends JPanel implements SharedConstants {
 
                         if (bricks[i][j].getType() == 0) {
                             score += 100;
-                        }
 
-                        //TODO: Fix so that it gives the points only when destroyed
-                        //Currently it gives points the strike before and when it's destroyed
+
+                            if (powers[i][j] != null) {
+                                powers[i][j].triggerFall();
+                            }
+                        }
                         else if (bricks[i][j].getType() == 1 && bricks[i][j].getHealth() == 0) {
                             score += 50;
                         }
                         else if (bricks[i][j].getType() == 2) {
                             destroyNeighbors(bricks, i, j);
+
+
+                            if (powers[i][j] != null) {
+                                powers[i][j].triggerFall();
+                            }
+
+
                             score += 100;
                         }
-
-
-                        if (bricks[i][j].getType() != 1 && randomSpawnPower < 4) {
-                            createPowerUp(bricks[i][j].getX(), bricks[i][j].getY(), powerType);
-                            localPowerType = powerType;
-                        }
-
                         scoreString = "Score: " + Integer.toString(score);
                     }
                 }
