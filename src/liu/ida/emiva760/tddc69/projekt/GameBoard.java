@@ -64,7 +64,6 @@ public class GameBoard extends JPanel implements SharedConstants {
                 spawnInt = randomNo.nextInt(5);
 				blockType = randomNo.nextInt(3);
                 powerType = powerRand.nextInt(3);
-				//typ så här:
                 if (spawnInt == 1) {
                     powers[i][j] = new PowerUp(j*50,i*30+50, powerType);
                 }
@@ -211,9 +210,6 @@ public class GameBoard extends JPanel implements SharedConstants {
         }
     }
 
-    /*private void createPowerUp(int x, int y, int type) {
-        powerUp = new PowerUp(x, y, type);
-    }*/
 
     // Did the powerup collide with the paddle?
     private boolean pickedUpPower(PowerUp powerUp) {
@@ -230,6 +226,8 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Destroy bricks neighboring to an explosive brick.
      */
     private void destroyNeighbors(Brick[][] array, int i, int j) {
+
+        //TODO: Convert all these if occurences into calls to a single function
         if (powers[i][j] != null) {
             powers[i][j].triggerFall();
         }
