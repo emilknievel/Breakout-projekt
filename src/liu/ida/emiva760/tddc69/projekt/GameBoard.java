@@ -152,7 +152,8 @@ public class GameBoard extends JPanel implements SharedConstants {
                         powers[i][j] = null;
                         repaint();
                     }
-                    if (powers[i][j] != null && powers[i][j].getY() > SharedConstants.BOTTOM) {
+                    if (powers[i][j] != null &&
+                            powers[i][j].getY() > SharedConstants.BOTTOM) {
                         powers[i][j] = null;
                         repaint();
                     }
@@ -226,11 +227,7 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Destroy bricks neighboring to an explosive brick.
      */
     private void destroyNeighbors(Brick[][] array, int i, int j) {
-
-        //TODO: Convert all these if occurences into calls to a single function
-        if (powers[i][j] != null) {
-            powers[i][j].triggerFall();
-        }
+        triggerPower(powers[i][j]);
 
         array[i][j].blowUp();
 
@@ -240,6 +237,7 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i - 1][j].blowUp();
             score += 100;
+            triggerPower(powers[i - 1][j]);
         }
 
         if (isBlockBelow(array, i, j)) {
@@ -248,9 +246,7 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i + 1][j].blowUp();
             score += 100;
-            if (powers[i + 1][j] != null) {
-                powers[i + 1][j].triggerFall();
-            }
+            triggerPower(powers[i + 1][j]);
         }
 
         if (isBlockLeft(array, i, j)) {
@@ -259,9 +255,7 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i][j - 1].blowUp();
             score += 100;
-            if (powers[i][j - 1] != null) {
-                powers[i][j - 1].triggerFall();
-            }
+            triggerPower(powers[i][j - 1]);
         }
 
         if (isBlockRight(array, i, j)) {
@@ -270,9 +264,7 @@ public class GameBoard extends JPanel implements SharedConstants {
             }
             array[i][j + 1].blowUp();
             score += 100;
-            if (powers[i][j + 1] != null) {
-                powers[i][j + 1].triggerFall();
-            }
+            triggerPower(powers[i][j + 1]);
         }
     }
 
@@ -407,24 +399,14 @@ public class GameBoard extends JPanel implements SharedConstants {
 
                         if (bricks[i][j].getType() == 0) {
                             score += 100;
-
-
-                            if (powers[i][j] != null) {
-                                powers[i][j].triggerFall();
-                            }
+                            triggerPower(powers[i][j]);
                         }
                         else if (bricks[i][j].getType() == 1 && bricks[i][j].getHealth() == 0) {
                             score += 50;
                         }
                         else if (bricks[i][j].getType() == 2) {
                             destroyNeighbors(bricks, i, j);
-
-
-                            if (powers[i][j] != null) {
-                                powers[i][j].triggerFall();
-                            }
-
-
+                            triggerPower(powers[i][j]);
                             score += 100;
                         }
                         scoreString = "Score: " + Integer.toString(score);
@@ -432,6 +414,14 @@ public class GameBoard extends JPanel implements SharedConstants {
                 }
             }
         }
+    }
+
+    /**
+     * Make the power fall down.
+     */
+    private void triggerPower(PowerUp power) {
+        if(power != null)
+            power.triggerFall();
     }
 
 }
