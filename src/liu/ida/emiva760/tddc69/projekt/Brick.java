@@ -7,10 +7,10 @@ public class Brick extends GameObject {
     protected URL brick;
 
 	boolean destroyed;
-    private int type;
+    private BrickType type;
     private int health;
 
-    public Brick(int x, int y, int type) {
+    public Brick(int x, int y, BrickType type) {
 		this.x = x;
 		this.y = y;
         this.type = type;
@@ -44,15 +44,15 @@ public class Brick extends GameObject {
         this.destroyed = true;
     }
 
-    private void selectImage(int type) {
+    private void selectImage(BrickType type) {
         switch (type) {
-            case 0:
+            case NORMAL:
                 brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/brick.png");
                 break;
-            case 1:
+            case SOLID:
                 makeSolid();
                 break;
-            case 2:
+            case EXPLOSIVE:
                 brick = Brick.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/explosivebrick.png");
                 break;
             default:
@@ -70,7 +70,7 @@ public class Brick extends GameObject {
         return health;
     }
 
-    public int getType() {
+    public BrickType getType() {
         return type;
     }
 }

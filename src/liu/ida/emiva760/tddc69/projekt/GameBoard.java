@@ -21,9 +21,11 @@ public class GameBoard extends JPanel implements SharedConstants {
 	private int score = 0;
 	private int lives = 2;
 
-	private static Random randomNo = new Random();
+	private static Random random = new Random();
 	private int blockType;
     private int spawnInt;
+
+    private BrickType brickType;
 
 	private static Random powerRand = new Random();
 	private int powerType;
@@ -61,13 +63,13 @@ public class GameBoard extends JPanel implements SharedConstants {
 		// randomly place powerUps below blocks
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 6; j++) {
-                spawnInt = randomNo.nextInt(5);
-				blockType = randomNo.nextInt(3);
+                spawnInt = random.nextInt(5);
+				brickType = BrickType.randomBrickType();
                 powerType = powerRand.nextInt(3);
                 if (spawnInt == 1) {
                     powers[i][j] = new PowerUp(j*50,i*30+50, powerType);
                 }
-				bricks[i][j] = new Brick(j*50, i*30+50, blockType);
+				bricks[i][j] = new Brick(j*50, i*30+50, brickType);
 			}
 		}
 	}
@@ -232,7 +234,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         array[i][j].blowUp();
 
         if (isBlockAbove(array, i, j)) {
-            if (array[i - 1][j].getType() == 2) {   // above explosive?
+            if (array[i - 1][j].getType() == BrickType.EXPLOSIVE) {   // above explosive?
                 destroyNeighbors(array, i - 1, j);
             }
             array[i - 1][j].blowUp();
@@ -241,7 +243,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         }
 
         if (isBlockBelow(array, i, j)) {
-            if (array[i + 1][j].getType() == 2) {
+            if (array[i + 1][j].getType() == BrickType.EXPLOSIVE) {
                 destroyNeighbors(array, i + 1, j);
             }
             array[i + 1][j].blowUp();
@@ -250,7 +252,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         }
 
         if (isBlockLeft(array, i, j)) {
-            if (array[i][j - 1].getType() == 2) {
+            if (array[i][j - 1].getType() == BrickType.EXPLOSIVE) {
                 destroyNeighbors(array, i, j - 1);
             }
             array[i][j - 1].blowUp();
@@ -259,7 +261,7 @@ public class GameBoard extends JPanel implements SharedConstants {
         }
 
         if (isBlockRight(array, i, j)) {
-            if (array[i][j + 1].getType() == 2) {
+            if (array[i][j + 1].getType() == BrickType.EXPLOSIVE) {
                 destroyNeighbors(array, i, j + 1);
             }
             array[i][j + 1].blowUp();
@@ -397,14 +399,17 @@ public class GameBoard extends JPanel implements SharedConstants {
 
                         bricks[i][j].setDestroyed(true);
 
-                        if (bricks[i][j].getType() == 0) {
+                        if (bricks[i][j].getType() == BrickType.NORMAL) {
                             score += 100;
                             triggerPower(powers[i][j]);
                         }
-                        else if (bricks[i][j].getType() == 1 && bricks[i][j].getHealth() == 0) {
+                        else if (bricks[i][j].getType() == BrickType.SOLID &&
+                                bricks[i][j].getHealth() == 0) {
+                            bricks[i][j].setDestroyed(true);
                             score += 50;
+                            triggerPower(powers[i][j]);
                         }
-                        else if (bricks[i][j].getType() == 2) {
+                        else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
                             destroyNeighbors(bricks, i, j);
                             triggerPower(powers[i][j]);
                             score += 100;
