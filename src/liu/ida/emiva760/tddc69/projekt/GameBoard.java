@@ -22,19 +22,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 	private int lives = 2;
 
 	private static Random random = new Random();
-	private int blockType;
-    private int spawnInt;
 
-    private BrickType brickType;
-
-	private static Random powerRand = new Random();
-	private int powerType;
-	private int localPowerType; // The type of the currently spawned powerUp
-
-	private static Random destroyedBlockRand = new Random();
-	private int randomSpawnPower;
-
-	private String scoreString = "Score: " + Integer.toString(score);
+    private String scoreString = "Score: " + Integer.toString(score);
 	private String livesString = "Lives: " + Integer.toString(lives);
 
 	public GameBoard() {
@@ -50,6 +39,15 @@ public class GameBoard extends JPanel implements SharedConstants {
 		gameTimer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10);
 	}
 
+    /**
+     * Random enum selection method found at
+     * http://stackoverflow.com/questions/1972392/java-pick-a-random-value-from-an-enum
+     */
+    public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
+        int x = random.nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
+    }
+
 	public void addNotify() {
 		super.addNotify();
 		gameInit();
@@ -63,9 +61,9 @@ public class GameBoard extends JPanel implements SharedConstants {
 		// randomly place powerUps below blocks
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 6; j++) {
-                spawnInt = random.nextInt(5);
-				brickType = BrickType.randomBrickType();
-                powerType = powerRand.nextInt(3);
+                int spawnInt = random.nextInt(5);
+                BrickType brickType = randomEnum(BrickType.class);
+                PowerType powerType = randomEnum(PowerType.class);
                 if (spawnInt == 1) {
                     powers[i][j] = new PowerUp(j*50,i*30+50, powerType);
                 }
@@ -202,11 +200,11 @@ public class GameBoard extends JPanel implements SharedConstants {
         scoreString = "Score: " + Integer.toString(score);
     }
 
-    private void usePowerUp(int type) {
-        if (type == 0) {
+    private void usePowerUp(PowerType type) {
+        if (type == PowerType.POINTS) {
             useExtraPoints();
         }
-        else if (type == 1) {
+        else if (type == PowerType.EXTRA_LIFE) {
             useExtraLife();
         } else {
             useLoseLife();
@@ -216,7 +214,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 
     // Did the powerup collide with the paddle?
     private boolean pickedUpPower(PowerUp powerUp) {
-        if (powerUp != null && powerUp.getY() == paddle.getY()) {
+        if (powerUp != null &&
+                powerUp.getY() == paddle.getY() - powerUp.getHeight() / 2) {
             if (powerUp.getX() >= paddle.getX()) {
                 return powerUp.getX() <= paddle.getX() + paddle.getWidth();
             }

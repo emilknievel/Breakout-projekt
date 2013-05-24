@@ -6,9 +6,9 @@ import java.net.URL;
 public class PowerUp extends GameObject implements SharedConstants {
     protected URL powerup;
     private int yDir;
-    private int type;
+    private PowerType type;
 
-    public PowerUp(int x, int y, int type) {
+    public PowerUp(int x, int y, PowerType type) {
         this.x = x;
         this.y = y;
         yDir = 0;   //should be still until a brick above it is destroyed
@@ -22,15 +22,15 @@ public class PowerUp extends GameObject implements SharedConstants {
         height = image.getHeight(null);
     }
 
-    private void selectImage(int type) {
+    private void selectImage(PowerType type) {
         switch (type) {
-            case 0:
+            case POINTS:
                 powerup = PowerUp.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/power_points.png");
                 break;
-            case 1:
+            case EXTRA_LIFE:
                 powerup = PowerUp.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/power_extralife.png");
                 break;
-            case 2:
+            case LOSE_LIFE:
                 powerup = PowerUp.class.getResource("/liu/ida/emiva760/tddc69/projekt/sprites/power_loselife.png");
                 break;
             default:
@@ -39,7 +39,7 @@ public class PowerUp extends GameObject implements SharedConstants {
         }
     }
 
-    public int getType() {
+    public PowerType getType() {
         return type;
     }
 
