@@ -1,3 +1,7 @@
 A simple java implementation of the classic Breakout.
 
 Steer the paddle with the left and right arrow keys.
+
+Improvements that can be made:
+
+* Implement a vector based system for ball movement. That would be rad indeed :)
