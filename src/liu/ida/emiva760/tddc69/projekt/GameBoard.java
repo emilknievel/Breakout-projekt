@@ -212,7 +212,9 @@ public class GameBoard extends JPanel implements SharedConstants {
     }
 
 
-    // Did the powerup collide with the paddle?
+    /**
+     * Test whether the power up has collided with the paddle.
+     */
     private boolean pickedUpPower(PowerUp powerUp) {
         if (powerUp != null &&
                 powerUp.getY() == paddle.getY() - powerUp.getHeight() / 2) {
