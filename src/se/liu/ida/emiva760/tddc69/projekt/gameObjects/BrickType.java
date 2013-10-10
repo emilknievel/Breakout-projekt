@@ -1,4 +1,4 @@
-package liu.ida.emiva760.tddc69.projekt;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 /**
  * The type of Brick.

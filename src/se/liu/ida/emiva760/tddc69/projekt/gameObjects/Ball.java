@@ -1,7 +1,8 @@
-package liu.ida.emiva760.tddc69.projekt;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 import javax.swing.ImageIcon;
 import java.net.URL;
+import se.liu.ida.emiva760.tddc69.projekt.*
 
 public class Ball extends GameObject implements SharedConstants {
 	private int xDir;
