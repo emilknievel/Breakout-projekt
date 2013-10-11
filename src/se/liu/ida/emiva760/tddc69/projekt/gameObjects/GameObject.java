@@ -12,7 +12,6 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
     // The name of the sprite to be drawn
     private String spriteFileName;
 
-
     protected double x;
     protected double y;
 
@@ -23,9 +22,12 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
 
     public GameObject(double x, double y, String spriteFileName) {
 	super(x, y);
+	this.x = x;
+	this.y = y;
+	this.spriteFileName = spriteFileName;
 
 	// Loads sprite URL from the sprite name variable
-	URL spriteUrl = getClass().getResource("sprites/" + spriteFileName);
+	URL spriteUrl = getClass().getResource("/se/liu/ida/emiva760/tddc69/projekt/resources/" + spriteFileName);
 
 	ImageIcon icon = null;
 	if (spriteUrl != null) {
@@ -34,7 +36,6 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
 	    System.err.println("Couldn't find file: " + spriteFileName);
 	}
 
-	// A BufferedImage object
 	sprite = icon.getImage();
 
 	width = sprite.getWidth(null);

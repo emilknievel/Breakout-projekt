@@ -3,6 +3,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 public class Brick extends GameObject {
     boolean destroyed;
     protected int health;
+    protected BrickType type;
 
     public Brick(double x, double y, String brickType) {
 	super(x, y, brickType);
@@ -30,5 +31,9 @@ public class Brick extends GameObject {
 
     public int getHealth() {
 	return health;
+    }
+
+    public BrickType getType() {
+	return type;
     }
 }

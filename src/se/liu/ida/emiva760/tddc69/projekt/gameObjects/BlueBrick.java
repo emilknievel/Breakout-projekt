@@ -7,6 +7,7 @@ public class BlueBrick extends Brick
 {
     public BlueBrick(double x, double y) {
 	super(x, y, "bluebrick.png");
-	health = 1;
+	health = 0;
+	type = BrickType.NORMAL;
     }
 }

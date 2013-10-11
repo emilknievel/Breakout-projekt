@@ -8,11 +8,11 @@ import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
  */
 public class LoseLifePower extends PowerUp
 {
-    public LoseLifePower(double x, double y) {
-	super(x, y, "power_loselife.png");
+    public LoseLifePower(double x, double y, GameBoard gameBoard) {
+	super(x, y, "power_loselife.png", gameBoard);
     }
 
-    public void usePowerUp(GameBoard gameBoard) {
+    public void usePowerUp() {
 	if (gameBoard.lives == 0) {
 	    gameBoard.stopGame();
 	} else {

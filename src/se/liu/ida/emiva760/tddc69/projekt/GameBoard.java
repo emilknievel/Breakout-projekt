@@ -22,6 +22,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements SharedConstants {
+    //GameThread gameThread;
     Timer gameTimer;
     String message = "Game Over! ";
     Ball ball;
@@ -39,8 +40,8 @@ public class GameBoard extends JPanel implements SharedConstants {
     private static Random random = new Random();
 
     public GameBoard() {
-	//addKeyListener(new TAdapter());
-	addKeyListener(new SteeringListener(this, paddle));
+	addKeyListener(new SteeringAdapter());
+	//addKeyListener(new SteeringListener(this, paddle));
 	setFocusable(true);
 
 	bricks = new Brick[5][6];
@@ -50,7 +51,9 @@ public class GameBoard extends JPanel implements SharedConstants {
 	setDoubleBuffered(true);
 	gameTimer = new Timer();
 	//
-	gameTimer.scheduleAtFixedRate(new ScheduleTask(), 1000, 10); // How fast the game loop
+	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10); // How fast the game loops
+	//gameThread = new GameThread();
+
     }
 
     /**
@@ -68,8 +71,8 @@ public class GameBoard extends JPanel implements SharedConstants {
     }
 
     public void gameInit() {
-	ball = new Ball();
-	paddle = new Paddle(SharedConstants.WIDTH / 2 - paddle.getWidth(), SharedConstants.BOTTOM - paddle.getHeight());
+	ball = new Ball(SharedConstants.BALL_STARTX, SharedConstants.BALL_STARTY);
+	paddle = new Paddle(SharedConstants.PADDLE_STARTX, SharedConstants.PADDLE_STARTY);
 
 	// Place the blocks on 5 rows and 6 columns
 	// randomly place powerUps below blocks
@@ -81,15 +84,15 @@ public class GameBoard extends JPanel implements SharedConstants {
 		if (spawnInt == 1) {
 		    // Place extra point powerup
 		    if (powerType == PowerType.POINTS) {
-			powers[i][j] = new PointsPower(j*50, i*30+50);
+			powers[i][j] = new PointsPower(j*50, i*30+50, this);
 		    }
 		    // Place extra life powerup
 		    else if (powerType == PowerType.EXTRA_LIFE) {
-			powers[i][j] = new ExtraLifePower(j*50, i*30+50);
+			powers[i][j] = new ExtraLifePower(j*50, i*30+50, this);
 		    }
 		    // Place lose life powerup
 		    else if (powerType == PowerType.LOSE_LIFE) {
-			powers[i][j] = new LoseLifePower(j*50, i*30+50);
+			powers[i][j] = new LoseLifePower(j*50, i*30+50, this);
 		    }
 		}
 
@@ -112,7 +115,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 
     public void nextLife() {
 	lives -= 1;
-	ball = new Ball();
+	ball = new Ball(SharedConstants.BALL_STARTX, SharedConstants.BALL_STARTY);
 	paddle.resetState();
     }
 
@@ -166,8 +169,10 @@ public class GameBoard extends JPanel implements SharedConstants {
 	g2.dispose();
     }
 
-    // Replace with listener?
-    /*private class TAdapter extends KeyAdapter {
+    /**
+     * Controls the steering of the paddle
+     */
+    private class SteeringAdapter extends KeyAdapter {
 	public void keyReleased(KeyEvent e) {
 	    paddle.keyReleased(e);
 	}
@@ -176,10 +181,10 @@ public class GameBoard extends JPanel implements SharedConstants {
 	    paddle.keyPressed(e);
 	}
     }
-    */
+
 
     // Might need to refactor this
-    class ScheduleTask extends TimerTask {
+    class GameTask extends TimerTask {
 	public void run() {
 	    ball.move();
 	    paddle.move();
@@ -276,7 +281,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 	array[i][j].blowUp();
 
 	if (isBlockAbove(array, i, j)) {
-	    if (array[i - 1][j].) {   // above explosive?
+	    if (array[i - 1][j].getType() == BrickType.EXPLOSIVE) {   // above explosive?
 		destroyNeighbors(array, i - 1, j);
 	    }
 	    array[i - 1][j].blowUp();

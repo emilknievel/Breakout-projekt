@@ -4,9 +4,11 @@ import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
 public class PowerUp extends GameObject {
     private int yDir;
+    protected GameBoard gameBoard;
 
-    public PowerUp(double x, double y, String powerType) {
+    public PowerUp(double x, double y, String powerType, GameBoard gameBoard) {
         super(x, y, powerType);
+	this.gameBoard = gameBoard;
         yDir = 0;   //should be still until a brick above it is destroyed
     }
 
@@ -18,7 +20,7 @@ public class PowerUp extends GameObject {
         yDir = 1;
     }
 
-    public void usePowerUp(GameBoard gameBoard) {
+    public void usePowerUp() {
 
     }
 }

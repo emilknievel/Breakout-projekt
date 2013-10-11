@@ -6,7 +6,8 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 public class SolidBrick extends Brick
 {
     public SolidBrick(double x, double y) {
-	super(x, y, "solidbrick");
+	super(x, y, "solidbrick.png");
 	health = 3;
+	type = BrickType.SOLID;
     }
 }
