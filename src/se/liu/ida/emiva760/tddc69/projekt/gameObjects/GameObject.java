@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.net.URL;
 
 public abstract class GameObject extends Point2D.Double implements SharedConstants {
@@ -79,5 +80,13 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
     {
 	return new Rectangle((int)x, (int)y,
 			     sprite.getWidth(null), sprite.getHeight(null));
+    }
+
+    public boolean intersects(GameObject gameObject) {
+	return getRect().intersects(gameObject.getRect());
+    }
+
+    public boolean intersectsFromSide(GameObject gameObject) {
+	return intersects(gameObject) && ((x < gameObject.getX() + 5) || (x > gameObject.getX() + gameObject.getWidth() - 5));
     }
 }

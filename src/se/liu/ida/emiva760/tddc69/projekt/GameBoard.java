@@ -1,17 +1,6 @@
 package se.liu.ida.emiva760.tddc69.projekt;
 
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.Ball;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.BlueBrick;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.Brick;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.BrickType;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.ExplosiveBrick;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.ExtraLifePower;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.LoseLifePower;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.Paddle;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.PointsPower;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.PowerType;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.PowerUp;
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.SolidBrick;
+import se.liu.ida.emiva760.tddc69.projekt.gameObjects.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -22,7 +11,6 @@ import java.util.Random;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements SharedConstants {
-    //GameThread gameThread;
     Timer gameTimer;
     String message = "Game Over! ";
     Ball ball;
@@ -41,7 +29,6 @@ public class GameBoard extends JPanel implements SharedConstants {
 
     public GameBoard() {
 	addKeyListener(new SteeringAdapter());
-	//addKeyListener(new SteeringListener(this, paddle));
 	setFocusable(true);
 
 	bricks = new Brick[5][6];
@@ -50,9 +37,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 	setDoubleBuffered(true);
 	gameTimer = new Timer();
-	//
 	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10); // How fast the game loops
-	//gameThread = new GameThread();
 
     }
 
@@ -113,18 +98,30 @@ public class GameBoard extends JPanel implements SharedConstants {
 	}
     }
 
+    /**
+     * Place the paddle and the ball at their original positions when a life is lost
+     */
     public void nextLife() {
 	lives -= 1;
 	ball = new Ball(SharedConstants.BALL_STARTX, SharedConstants.BALL_STARTY);
 	paddle.resetState();
     }
 
+    /**
+     * The paint component. Draws the graphics of the entire game.
+     * @param g is the graphics object
+     */
     public void paint(Graphics g) {
 	Graphics2D g2 = (Graphics2D) g;
+	super.setBackground(Color.WHITE);
 	super.paint(g2);
 
+	// Only draw when the game is running
 	if (gameRunning) {
+	    //g2.setBackground(new Color(0, 0, 0));
 	    // draws the text in the game
+	    Font gameFont = new Font("Sans", Font.BOLD, 11);
+	    g2.setFont(gameFont);
 	    g2.drawString(scoreString,
 			  SharedConstants.WIDTH-SharedConstants.WIDTH / 2, 10);
 	    g2.drawString(livesString, 10, 10);
@@ -134,6 +131,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 	    g2.drawImage(paddle.getImage(), (int)paddle.getX(), (int)paddle.getY(),
 			 paddle.getWidth(), paddle.getHeight(), this);
 
+	    // Check the different object arrays and draw the objects that exist in said arrays
 	    for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 6; j++) {
 		    if (powers[i][j] != null) {
@@ -143,6 +141,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 				powers[i][j].getWidth(),
 				powers[i][j].getHeight(), this);
 		    }
+		    // Only draw bricks that haven't been destroyed
 		    if (!bricks[i][j].isDestroyed()) {
 			g2.drawImage(
 				bricks[i][j].getImage(),
@@ -152,16 +151,16 @@ public class GameBoard extends JPanel implements SharedConstants {
 		    }
 		}
 	    }
-	} else {
-	    Font font = new Font("Sans", Font.BOLD, 11);
-	    FontMetrics metrics = this.getFontMetrics(font);
+	} else { // Tell the player that the game is over
+	    Font endFont = new Font("Sans", Font.BOLD, 15);
+	    FontMetrics endMetrics = this.getFontMetrics(endFont);
 
 	    g2.setColor(Color.BLACK);
-	    g2.setFont(font);
+	    g2.setFont(endFont);
 	    g2.drawString(
 		    message + scoreString,
 		    (SharedConstants.WIDTH -
-		     metrics.stringWidth(message + scoreString))/2,
+		     endMetrics.stringWidth(message + scoreString))/2,
 		    SharedConstants.WIDTH/2);
 	}
 
@@ -182,8 +181,6 @@ public class GameBoard extends JPanel implements SharedConstants {
 	}
     }
 
-
-    // Might need to refactor this
     class GameTask extends TimerTask {
 	public void run() {
 	    ball.move();
@@ -211,11 +208,17 @@ public class GameBoard extends JPanel implements SharedConstants {
 	}
     }
 
+    /**
+     * Stops the timer that controls the game speed and therefore stops the game
+     */
     public void stopGame() {
 	gameRunning = false;
 	gameTimer.cancel();
     }
 
+    /**
+     * Controls collisions and whether all bricks are destroyed
+     */
     public void checkCollision() {
 	ballMissed();
 
@@ -226,37 +229,6 @@ public class GameBoard extends JPanel implements SharedConstants {
 
 	ballBrickCollision();
     }
-
-    /*private void useExtraLife() {
-	lives += 1;
-	livesString = "Lives: " + Integer.toString(lives);
-    }
-
-    private void useLoseLife() {
-	if (lives == 0) {
-	    stopGame();
-	} else {
-	    lives -= 1;
-	    livesString = "Lives: " + Integer.toString(lives);
-	}
-    }
-
-    private void useExtraPoints() {
-	score += 300;
-	scoreString = "Score: " + Integer.toString(score);
-    }*/
-
-    /*private void usePowerUp(PowerType type) {
-	if (type == PowerType.POINTS) {
-	    useExtraPoints();
-	}
-	else if (type == PowerType.EXTRA_LIFE) {
-	    useExtraLife();
-	} else {
-	    useLoseLife();
-	}
-    }*/
-
 
     /**
      * Test whether the power up has collided with the paddle.
@@ -371,39 +343,11 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Adjust the direction of the ball relating to where it hits the paddle.
      */
     private void ballPaddleCollision() {
-	if ((ball.getRect()).intersects(paddle.getRect())) {
-
-	    int paddleLPos = (int)paddle.getRect().getMinX();
-	    int ballLPos = (int)ball.getRect().getMinX();
-
-	    int first = paddleLPos + 8;
-	    int second = paddleLPos + 16;
-	    int third = paddleLPos + 24;
-	    int fourth = paddleLPos + 32;
-
-	    if (ballLPos < first) {
-		ball.setXDir(-1);
-		ball.setYDir(-1);
-	    }
-
-	    if (ballLPos >= first && ballLPos < second) {
-		ball.setXDir(-1);
-		ball.setYDir(-1 * ball.getYDir());
-	    }
-
-	    if (ballLPos >= second && ballLPos < third) {
-		ball.setXDir(0);
-		ball.setYDir(-1);
-	    }
-
-	    if (ballLPos >= third && ballLPos < fourth) {
-		ball.setXDir(1);
-		ball.setYDir(-1 * ball.getYDir());
-	    }
-
-	    if (ballLPos > fourth) {
-		ball.setXDir(1);
-		ball.setYDir(-1);
+	if (ball.intersects(paddle)) {
+	    if (ball.intersectsFromSide(paddle)) {
+		ball.flipXDir();
+	    } else {
+		ball.flipYDir();
 	    }
 	}
     }
@@ -415,63 +359,38 @@ public class GameBoard extends JPanel implements SharedConstants {
     private void ballBrickCollision() {
 	for (int i = 0; i < 5; i++) {
 	    for (int j = 0; j < 6; j++) {
-		if ((ball.getRect()).intersects(bricks[i][j].getRect())) {
-
-		    int ballLeft = (int)ball.getRect().getMinX();
-		    int ballHeight = (int)ball.getRect().getHeight();
-		    int ballWidth = (int)ball.getRect().getWidth();
-		    int ballTop = (int)ball.getRect().getMinY();
-
-		    Point pointRight =
-			    new Point(ballLeft + ballWidth + 1, ballTop);
-		    Point pointLeft = new Point(ballLeft - 1, ballTop);
-		    Point pointTop = new Point(ballLeft, ballTop - 1);
-		    Point pointBottom =
-			    new Point(ballLeft, ballTop + ballHeight + 1);
-
-		    if (!bricks[i][j].isDestroyed()) {
-			if (bricks[i][j].getRect().contains(pointRight)) {
-			    ball.setXDir(-1);
-			}
-
-			else if (bricks[i][j].getRect().contains(pointLeft)) {
-			    ball.setXDir(1);
-			}
-
-			if (bricks[i][j].getRect().contains(pointTop)) {
-			    ball.setYDir(1);
-			}
-
-			else if (bricks[i][j].getRect().contains(pointBottom)) {
-			    ball.setYDir(-1);
-			}
-
-			bricks[i][j].setDestroyed(true);
-
-			if (bricks[i][j].getType() == BrickType.NORMAL) {
-			    score += 100;
-			    triggerPower(powers[i][j]);
-			}
-			else if (bricks[i][j].getType() == BrickType.SOLID &&
-				 bricks[i][j].getHealth() == 0) {
-			    bricks[i][j].setDestroyed(true);
-			    score += 50;
-			    triggerPower(powers[i][j]);
-			}
-			else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
-			    destroyNeighbors(bricks, i, j);
-			    triggerPower(powers[i][j]);
-			    score += 100;
-			}
-			scoreString = "Score: " + Integer.toString(score);
+		if (ball.intersects(bricks[i][j]) && !bricks[i][j].isDestroyed()) {
+		    if(ball.intersectsFromSide(bricks[i][j])) {
+			ball.flipXDir();
+		    } else {
+			ball.flipYDir();
 		    }
+
+		    bricks[i][j].setDestroyed(true);
+
+		    if (bricks[i][j].getType() == BrickType.NORMAL) {
+			score += 100;
+			triggerPower(powers[i][j]);
+		    }
+		    else if (bricks[i][j].getType() == BrickType.SOLID &&
+			     bricks[i][j].getHealth() == 0) {
+			bricks[i][j].setDestroyed(true);
+			score += 50;
+			triggerPower(powers[i][j]);
+		    }
+		    else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
+			destroyNeighbors(bricks, i, j);
+			triggerPower(powers[i][j]);
+			score += 100;
+		    }
+		    scoreString = "Score: " + Integer.toString(score);
 		}
 	    }
 	}
     }
 
     /**
-     * Make the power fall down.
+     * Make the powerup fall down.
      */
     private void triggerPower(PowerUp power) {
 	if(power != null)

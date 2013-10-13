@@ -67,4 +67,12 @@ public class Ball extends GameObject implements SharedConstants {
     public int getStartingX() {
 	return startingX;
     }
+
+    public void flipXDir() {
+	xDir = -xDir;
+    }
+
+    public void flipYDir() {
+    	yDir = -yDir;
+    }
 }
