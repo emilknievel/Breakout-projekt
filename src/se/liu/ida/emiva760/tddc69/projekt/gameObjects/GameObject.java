@@ -19,7 +19,7 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
 
     private Image sprite;
 
-    public GameObject(double x, double y, String spriteFileName) {
+    protected GameObject(double x, double y, String spriteFileName) {
 	super(x, y);
 	this.x = x;
 	this.y = y;
@@ -41,10 +41,12 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
 	height = sprite.getHeight(null);
     }
 
+    @Override
     public double getX() {
 	return x;
     }
 
+    @Override
     public double getY() {
 	return y;
     }
