@@ -13,6 +13,7 @@ public class Brejkaot extends JFrame {
         setIgnoreRepaint(true);
         setResizable(false);
         setVisible(true);
+
     }
 
     public static void main(String[] args) {
