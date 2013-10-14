@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
 

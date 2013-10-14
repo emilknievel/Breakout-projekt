@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
 
@@ -90,6 +90,6 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
     }
 
     public boolean intersectsFromSide(GameObject gameObject) {
-	return intersects(gameObject) && (((x + width) < gameObject.x) || (x > gameObject.getX() + gameObject.width));
+	return intersects(gameObject) && (((x + width) < gameObject.x) || (x > gameObject.x + gameObject.width));
     }
 }

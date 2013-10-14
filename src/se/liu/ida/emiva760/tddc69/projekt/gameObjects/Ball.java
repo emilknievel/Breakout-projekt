@@ -1,7 +1,7 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.*;
-
+//TODO: Add more types of balls. Ex: ghost ball, small ball, big ball, extra balls
 public class Ball extends GameObject {
     private double xDir;
     private double yDir;
@@ -18,8 +18,7 @@ public class Ball extends GameObject {
     /**
      * Move the ball and bounce off the top and sides of the board.
      */
-    public void move()
-    {
+    public void move() {
 	x += xDir;
 	y += yDir;
 
@@ -39,8 +38,7 @@ public class Ball extends GameObject {
     /**
      * Place at starting position
      */
-    public void resetState()
-    {
+    public void resetState() {
 	x = startingX;
 	y = startingHeight;
     }
