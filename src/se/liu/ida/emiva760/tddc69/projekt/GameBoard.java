@@ -1,6 +1,6 @@
 package se.liu.ida.emiva760.tddc69.projekt;
 
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.*;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjects.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
