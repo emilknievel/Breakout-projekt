@@ -3,8 +3,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
 /**
- * Created with IntelliJ IDEA. User: Emil Date: 2013-10-09 Time: 20:11 To change this template use File | Settings | File
- * Templates.
+ * Powerup that takes one life off the player.
  */
 public class LoseLifePower extends PowerUp
 {

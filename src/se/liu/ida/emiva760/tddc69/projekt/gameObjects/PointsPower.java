@@ -2,6 +2,9 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
+/**
+ * Powerup that gives the player extrapoints on collision.
+ */
 public class PointsPower extends PowerUp
 {
 

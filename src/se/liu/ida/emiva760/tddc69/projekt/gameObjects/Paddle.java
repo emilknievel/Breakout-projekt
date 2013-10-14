@@ -4,7 +4,10 @@ import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
 
 import java.awt.event.KeyEvent;
 
-public class Paddle extends GameObject implements SharedConstants
+/**
+ * The paddle that the player controls
+ */
+public class Paddle extends GameObject
 {
     private int dX;
 

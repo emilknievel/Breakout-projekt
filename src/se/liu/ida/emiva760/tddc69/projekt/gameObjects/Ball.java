@@ -2,7 +2,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.*;
 
-public class Ball extends GameObject implements SharedConstants {
+public class Ball extends GameObject {
     private double xDir;
     private double yDir;
     private int startingHeight = SharedConstants.BALL_STARTY;

@@ -10,13 +10,16 @@ import java.util.TimerTask;
 import java.util.Random;
 import javax.swing.JPanel;
 
+/**
+ * The Game Panel as well as the class that controls the game logic.
+ */
 public class GameBoard extends JPanel implements SharedConstants {
     Timer gameTimer;
     String message = "Game Over! ";
     Ball ball;
     Paddle paddle;
-    Brick bricks[][];
-    PowerUp powers[][];
+    Brick[][] bricks;
+    PowerUp[][] powers;
 
     boolean gameRunning = true;
 

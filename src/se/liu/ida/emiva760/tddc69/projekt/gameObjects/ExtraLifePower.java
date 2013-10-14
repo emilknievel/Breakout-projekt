@@ -2,6 +2,9 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
+/**
+ * Powerup that gives one life to the player when a collision occurs.
+ */
 public class ExtraLifePower extends PowerUp
 {
     public ExtraLifePower(double x, double y, GameBoard gameBoard) {

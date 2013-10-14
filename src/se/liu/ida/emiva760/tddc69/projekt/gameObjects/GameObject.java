@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
 
+/**
+ * Base class for all the game's objects. Contains methods common to all objects.
+ */
 public abstract class GameObject extends Point2D.Double implements SharedConstants {
     // The name of the sprite to be drawn
     private String spriteFileName;

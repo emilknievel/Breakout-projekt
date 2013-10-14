@@ -1,5 +1,8 @@
 package se.liu.ida.emiva760.tddc69.projekt;
 
+/**
+ * Contains constants that can be used throughout the project.
+ */
 public interface SharedConstants {
     public static final int WIDTH = 300; // Width of the gameboard
     public static final int HEIGHT = 400; // Height of the gameboard
