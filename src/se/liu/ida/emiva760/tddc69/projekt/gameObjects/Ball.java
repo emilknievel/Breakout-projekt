@@ -3,8 +3,8 @@ package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 import se.liu.ida.emiva760.tddc69.projekt.*;
 
 public class Ball extends GameObject implements SharedConstants {
-    private int xDir;
-    private int yDir;
+    private double xDir;
+    private double yDir;
     private int startingHeight = SharedConstants.BALL_STARTY;
     private int startingX = SharedConstants.BALL_STARTX;
 
@@ -24,15 +24,15 @@ public class Ball extends GameObject implements SharedConstants {
 	y += yDir;
 
 	if (x == 0) {
-	    setXDir(1);
+	    flipXDir();
 	}
 
-	if (x == BALL_RIGHT) {
-	    setXDir(-1);
+	if ((int)x == BALL_RIGHT) {
+	    flipXDir();
 	}
 
 	if (y == 0) {
-	    setYDir(1);
+	    flipYDir();
 	}
     }
 
@@ -55,7 +55,7 @@ public class Ball extends GameObject implements SharedConstants {
 	yDir = y;
     }
 
-    public int getYDir()
+    public double getYDir()
     {
 	return yDir;
     }

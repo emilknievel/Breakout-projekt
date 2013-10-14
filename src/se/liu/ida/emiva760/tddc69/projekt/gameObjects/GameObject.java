@@ -5,8 +5,6 @@ import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.net.URL;
 
 public abstract class GameObject extends Point2D.Double implements SharedConstants {
