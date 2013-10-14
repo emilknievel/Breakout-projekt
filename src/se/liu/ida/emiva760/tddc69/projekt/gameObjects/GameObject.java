@@ -90,6 +90,6 @@ public abstract class GameObject extends Point2D.Double implements SharedConstan
     }
 
     public boolean intersectsFromSide(GameObject gameObject) {
-	return intersects(gameObject) && ((x < gameObject.getX() + 5) || (x > gameObject.getX() + gameObject.getWidth() - 5));
+	return intersects(gameObject) && (((x + width) < gameObject.x) || (x > gameObject.getX() + gameObject.width));
     }
 }

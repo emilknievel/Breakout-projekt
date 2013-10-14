@@ -116,12 +116,11 @@ public class GameBoard extends JPanel implements SharedConstants {
      */
     public void paint(Graphics g) {
 	Graphics2D g2 = (Graphics2D) g;
-	super.setBackground(Color.WHITE);
+	setBackground(Color.WHITE);
 	super.paint(g2);
 
 	// Only draw when the game is running
 	if (gameRunning) {
-	    //g2.setBackground(new Color(0, 0, 0));
 	    // draws the text in the game
 	    Font gameFont = new Font("Sans", Font.BOLD, 11);
 	    g2.setFont(gameFont);
