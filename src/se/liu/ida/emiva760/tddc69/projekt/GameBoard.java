@@ -18,6 +18,7 @@ public class GameBoard extends JPanel implements SharedConstants {
     String message = "Game Over! ";
     Ball ball;
     Paddle paddle;
+    //TODO: Maybe change the arrays to ArrayLists
     Brick[][] bricks;
     PowerUp[][] powers;
 
