@@ -8,7 +8,7 @@ public class Brejkaot extends JFrame {
         add(new GameBoard());
         setTitle("Brejkaot");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(SharedConstants.WIDTH, SharedConstants.HEIGHT);
+        setSize(GameBoard.WIDTH, GameBoard.HEIGHT);
         setLocationRelativeTo(null);
         setIgnoreRepaint(true);
         setResizable(false);

@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 /**
  * Superclass for brick objects
@@ -6,7 +6,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
 public abstract class Brick extends GameObject {
     boolean destroyed;
     protected int health;
-    protected BrickType type;
+    protected BrickType type = null;
 
     protected Brick(double x, double y, String brickType) {
 	super(x, y, brickType);

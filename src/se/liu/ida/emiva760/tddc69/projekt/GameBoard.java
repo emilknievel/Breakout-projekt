@@ -1,6 +1,6 @@
 package se.liu.ida.emiva760.tddc69.projekt;
 
-import se.liu.ida.emiva760.tddc69.projekt.gameobjects.*;
+import se.liu.ida.emiva760.tddc69.projekt.gameObjects.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -13,19 +13,78 @@ import javax.swing.JPanel;
 /**
  * The Game Panel as well as the class that controls the game logic.
  */
-public class GameBoard extends JPanel implements SharedConstants {
+public class GameBoard extends JPanel
+{
+    /**
+     * Width of the GameBoard
+     */
+    public static final int WIDTH = 300;
+
+    /**
+     * Height of the GameBoard
+     */
+    public static final int HEIGHT = 400;
+
+    /**
+     * How far to the right the paddle can reach
+     */
+    public static final int PADDLE_RIGHT = 250;
+
+    /**
+     * How far to the right the ball can reach
+     * */
+    public static final int BALL_RIGHT = 290;
+
+    /**
+     * The y position of the ball at game start
+     */
+    public static final int BALL_STARTY = 350;
+
+    /**
+     * The x position of the ball at game start
+     */
+    public static final int BALL_STARTX = WIDTH / 2 - (WIDTH - BALL_RIGHT);
+
+    /**
+     * The y position of the paddle at game start
+     */
+    public static final int PADDLE_STARTY = 360;
+
+    /**
+     * The x position of the paddle at game start
+     */
+    public static final int PADDLE_STARTX = WIDTH / 2 - (WIDTH - PADDLE_RIGHT);
+
+    /**
+     * The number of rows of bricks
+     */
+    private static final int ROWS = 5;
+
+    /**
+     * The number of columns of bricks
+     */
+    private static final int COLUMNS = 6;
+
     Timer gameTimer;
     String message = "Game Over! ";
-    Ball ball;
-    Paddle paddle;
+    Ball ball = null;
+    Paddle paddle = null;
     //TODO: Maybe change the arrays to ArrayLists
     Brick[][] bricks;
     PowerUp[][] powers;
 
     boolean gameRunning = true;
 
+    /**
+     * The player's score
+     */
     public int score = 0;
+
+    /**
+     * The player's lives
+     */
     public int lives = 2;
+
     public String scoreString = "Score: " + Integer.toString(score);
     public String livesString = "Lives: " + Integer.toString(lives);
 
@@ -35,9 +94,9 @@ public class GameBoard extends JPanel implements SharedConstants {
 	addKeyListener(new SteeringAdapter());
 	setFocusable(true);
 
-	bricks = new Brick[5][6];
+	bricks = new Brick[ROWS][COLUMNS];
 
-	powers = new PowerUp[5][6];
+	powers = new PowerUp[ROWS][COLUMNS];
 
 	setDoubleBuffered(true);
 	gameTimer = new Timer();
@@ -60,13 +119,13 @@ public class GameBoard extends JPanel implements SharedConstants {
     }
 
     public void gameInit() {
-	ball = new Ball(SharedConstants.BALL_STARTX, SharedConstants.BALL_STARTY);
-	paddle = new Paddle(SharedConstants.PADDLE_STARTX, SharedConstants.PADDLE_STARTY);
+	ball = new Ball(BALL_STARTX, BALL_STARTY);
+	paddle = new Paddle(PADDLE_STARTX, PADDLE_STARTY);
 
-	// Place the blocks on 5 rows and 6 columns
+	// Place the blocks
 	// randomly place powerUps below blocks
-	for (int i = 0; i < 5; i++) {
-	    for (int j = 0; j < 6; j++) {
+	for (int i = 0; i < ROWS; i++) {
+	    for (int j = 0; j < COLUMNS; j++) {
 		int spawnInt = random.nextInt(5); // Generates a random number to control whether a powerup should be created
 		BrickType brickType = randomEnum(BrickType.class);
 		PowerType powerType = randomEnum(PowerType.class);
@@ -107,7 +166,7 @@ public class GameBoard extends JPanel implements SharedConstants {
      */
     public void nextLife() {
 	lives -= 1;
-	ball = new Ball(SharedConstants.BALL_STARTX, SharedConstants.BALL_STARTY);
+	ball = new Ball(BALL_STARTX, BALL_STARTY);
 	paddle.resetState();
     }
 
@@ -126,7 +185,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 	    Font gameFont = new Font("Sans", Font.BOLD, 11);
 	    g2.setFont(gameFont);
 	    g2.drawString(scoreString,
-			  SharedConstants.WIDTH-SharedConstants.WIDTH / 2, 10);
+			  WIDTH - WIDTH / 2, 10);
 	    g2.drawString(livesString, 10, 10);
 
 	    g2.drawImage(ball.getImage(), (int)ball.getX(), (int)ball.getY(),
@@ -135,8 +194,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 			 paddle.getWidth(), paddle.getHeight(), this);
 
 	    // Check the different object arrays and draw the objects that exist in said arrays
-	    for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 6; j++) {
+	    for (int i = 0; i < ROWS; i++) {
+		for (int j = 0; j < COLUMNS; j++) {
 		    if (powers[i][j] != null) {
 			g2.drawImage(
 				powers[i][j].getImage(),
@@ -162,9 +221,9 @@ public class GameBoard extends JPanel implements SharedConstants {
 	    g2.setFont(endFont);
 	    g2.drawString(
 		    message + scoreString,
-		    (SharedConstants.WIDTH -
+		    (WIDTH -
 		     endMetrics.stringWidth(message + scoreString))/2,
-		    SharedConstants.WIDTH/2);
+		    WIDTH /2);
 	}
 
 	Toolkit.getDefaultToolkit().sync();
@@ -175,12 +234,12 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Controls the steering of the paddle
      */
     private class SteeringAdapter extends KeyAdapter {
-	public void keyReleased(KeyEvent e) {
-	    paddle.keyReleased(e);
+	public void keyReleased(KeyEvent keyEvent) {
+	    paddle.keyReleased(keyEvent);
 	}
 
-	public void keyPressed(KeyEvent e) {
-	    paddle.keyPressed(e);
+	public void keyPressed(KeyEvent keyEvent) {
+	    paddle.keyPressed(keyEvent);
 	}
     }
 
@@ -188,8 +247,8 @@ public class GameBoard extends JPanel implements SharedConstants {
 	public void run() {
 	    ball.move();
 	    paddle.move();
-	    for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 6; j++) {
+	    for (int i = 0; i < ROWS; i++) {
+		for (int j = 0; j < COLUMNS; j++) {
 		    if (powers[i][j] != null) {
 			powers[i][j].move();
 		    }
@@ -199,7 +258,7 @@ public class GameBoard extends JPanel implements SharedConstants {
 			repaint();
 		    }
 		    if (powers[i][j] != null &&
-			powers[i][j].getY() > SharedConstants.BOTTOM) {
+			powers[i][j].getY() > HEIGHT) {
 			powers[i][j] = null;
 			repaint();
 		    }
@@ -313,7 +372,7 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Lose 1 life if the ball has reached the bottom
      */
     private void ballMissed() {
-	if (ball.getRect().getMaxY() > SharedConstants.BOTTOM) {
+	if (ball.getRect().getMaxY() > HEIGHT) {
 	    if (lives == 0) {
 		stopGame();
 	    } else {
@@ -327,8 +386,8 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Check if the game is won.
      */
     private void checkWinCondition(int blocksDestroyed) {
-	for (int i = 0; i < 5; i++) {
-	    for (int j = 0; j < 6; j++) {
+	for (int i = 0; i < ROWS; i++) {
+	    for (int j = 0; j < COLUMNS; j++) {
 		if (bricks[i][j].isDestroyed()) {
 		    blocksDestroyed++;
 		}
@@ -359,8 +418,8 @@ public class GameBoard extends JPanel implements SharedConstants {
      * Destroy the brick.
      */
     private void ballBrickCollision() {
-	for (int i = 0; i < 5; i++) {
-	    for (int j = 0; j < 6; j++) {
+	for (int i = 0; i < ROWS; i++) {
+	    for (int j = 0; j < COLUMNS; j++) {
 		if (ball.intersects(bricks[i][j]) && !bricks[i][j].isDestroyed()) {
 		    if(ball.intersectsFromSide(bricks[i][j])) {
 			ball.flipXDir();

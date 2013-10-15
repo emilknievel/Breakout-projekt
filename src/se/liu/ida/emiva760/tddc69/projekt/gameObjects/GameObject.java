@@ -1,6 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
-
-import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +8,8 @@ import java.net.URL;
 /**
  * Base class for all the game's objects. Contains methods common to all objects.
  */
-public abstract class GameObject extends Point2D.Double implements SharedConstants {
+public abstract class GameObject extends Point2D.Double
+{
     // The name of the sprite to be drawn
     private String spriteFileName;
 

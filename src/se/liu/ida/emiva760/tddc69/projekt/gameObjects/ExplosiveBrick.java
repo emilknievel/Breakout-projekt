@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
 /**
  * A brick that explodes on impact. 

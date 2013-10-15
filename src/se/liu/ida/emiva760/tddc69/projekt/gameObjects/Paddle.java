@@ -1,6 +1,6 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameobjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
 
-import se.liu.ida.emiva760.tddc69.projekt.SharedConstants;
+import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
 import java.awt.event.KeyEvent;
 
@@ -23,8 +23,8 @@ public class Paddle extends GameObject
 	x += dX;
 	if (x <= 2)
 	    x = 2;
-	if (x >= SharedConstants.PADDLE_RIGHT)
-	    x = SharedConstants.PADDLE_RIGHT;
+	if (x >= GameBoard.PADDLE_RIGHT)
+	    x = GameBoard.PADDLE_RIGHT;
     }
 
     /**
@@ -63,8 +63,8 @@ public class Paddle extends GameObject
      * Place at starting position
      */
     public void resetState() {
-	x = SharedConstants.PADDLE_STARTX;
-	y = SharedConstants.PADDLE_STARTY;
+	x = GameBoard.PADDLE_STARTX;
+	y = GameBoard.PADDLE_STARTY;
     }
 
     public void setdX(final int dX) {
