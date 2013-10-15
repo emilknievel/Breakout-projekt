@@ -4,9 +4,6 @@ public class GhostBall extends Ball
 {
     public GhostBall(double x, double y) {
 	super(x, y, "ghostball.png");
-    }
-
-    public BallType getType() {
-	return BallType.GHOST;
+	type = BallType.GHOST;
     }
 }

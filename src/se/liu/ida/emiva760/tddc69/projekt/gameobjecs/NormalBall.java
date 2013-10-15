@@ -4,9 +4,6 @@ public class NormalBall extends Ball
 {
     public NormalBall(double x, double y) {
 	super(x, y, "normalball.png");
-    }
-
-    public BallType getType() {
-	return BallType.NORMAL;
+	type = BallType.NORMAL;
     }
 }

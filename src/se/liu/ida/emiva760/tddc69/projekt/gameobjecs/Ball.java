@@ -8,6 +8,8 @@ public abstract class Ball extends GameObject {
     private int startingHeight = GameBoard.BALL_STARTY;
     private int startingX = GameBoard.BALL_STARTX;
 
+    protected BallType type = null;
+
     protected Ball(double x, double y, String ballType) {
 	super(x, y, ballType);
 	xDir = 1;
@@ -72,5 +74,9 @@ public abstract class Ball extends GameObject {
 
     public void flipYDir() {
     	yDir = -yDir;
+    }
+
+    public BallType getType() {
+	return type;
     }
 }

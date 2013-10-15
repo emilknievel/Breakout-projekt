@@ -441,10 +441,12 @@ public class GameBoard extends JPanel
 	    for (int j = 0; j < COLUMNS; j++) {
 		for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
 		    if (balls.get(ballIndex).intersects(bricks[i][j]) && !bricks[i][j].isDestroyed()) {
-			if(balls.get(ballIndex).intersectsFromSide(bricks[i][j])) {
-			    balls.get(ballIndex).flipXDir();
-			} else {
-			    balls.get(ballIndex).flipYDir();
+			if (balls.get(ballIndex).getType() != BallType.GHOST) {
+			    if(balls.get(ballIndex).intersectsFromSide(bricks[i][j])) {
+				balls.get(ballIndex).flipXDir();
+			    } else {
+				balls.get(ballIndex).flipYDir();
+			    }
 			}
 
 			bricks[i][j].setDestroyed(true);
