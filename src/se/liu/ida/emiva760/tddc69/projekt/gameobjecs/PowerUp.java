@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
 import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 

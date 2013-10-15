@@ -1,6 +1,17 @@
 package se.liu.ida.emiva760.tddc69.projekt;
 
-import se.liu.ida.emiva760.tddc69.projekt.gameObjects.*;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.Ball;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.BlueBrick;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.Brick;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.BrickType;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.ExplosiveBrick;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.ExtraLifePower;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.LoseLifePower;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.Paddle;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.PointsPower;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.PowerType;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.PowerUp;
+import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.SolidBrick;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;

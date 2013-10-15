@@ -1,4 +1,4 @@
-package se.liu.ida.emiva760.tddc69.projekt.gameObjects;
+package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
 /**
  * A solid brick that can withstand multiple hits by the ball.
