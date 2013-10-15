@@ -172,10 +172,14 @@ public class GameBoard extends JPanel
      */
     public void nextLife() {
 	lives -= 1;
-	balls.clear();
-	numberOfBalls = 1;
-	balls.add(new NormalBall(BALL_STARTX, BALL_STARTY));
-	paddle.resetState();
+	if (lives >= 0) {
+	    balls.clear();
+	    numberOfBalls = 1;
+	    balls.add(new NormalBall(BALL_STARTX, BALL_STARTY));
+	    paddle.resetState();
+	    return;
+	}
+	stopGame();
     }
 
     /**
@@ -389,12 +393,10 @@ public class GameBoard extends JPanel
 	for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
 	    if (balls.get(ballIndex).getRect().getMaxY() > HEIGHT) {
 		numberOfBalls--;
-		if (numberOfBalls > 0) {
+		if (numberOfBalls == 0) {
 		    nextLife();
 		    livesString = "Lives: " + Integer.toString(lives);
-		    return;
 		}
-		stopGame();
 	    }
 	}
     }
