@@ -45,15 +45,20 @@ public abstract class Ball extends GameObject {
 	y = startingHeight;
     }
 
-    public void setXDir(int x)
+    public void setXDir(double x)
     {
 	xDir = x;
     }
 
-    public void setYDir(int y)
+    public void setYDir(double y)
     {
 	yDir = y;
     }
+
+    public double getXDir()
+        {
+    	return xDir;
+        }
 
     public double getYDir()
     {

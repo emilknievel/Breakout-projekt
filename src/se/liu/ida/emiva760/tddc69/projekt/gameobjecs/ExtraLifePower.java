@@ -11,6 +11,7 @@ public class ExtraLifePower extends PowerUp
 	super(x, y, "power_extralife.png", gameBoard);
     }
 
+    @Override
     public void usePowerUp() {
 	gameBoard.lives += 1;
 	gameBoard.livesString = "Lives: " + Integer.toString(gameBoard.lives);

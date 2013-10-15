@@ -11,6 +11,7 @@ public class LoseLifePower extends PowerUp
 	super(x, y, "power_loselife.png", gameBoard);
     }
 
+    @Override
     public void usePowerUp() {
 	if (gameBoard.lives == 0) {
 	    gameBoard.stopGame();

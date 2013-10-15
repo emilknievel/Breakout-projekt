@@ -69,7 +69,7 @@ public class GameBoard extends JPanel
     Timer gameTimer;
     String message = "Game Over! ";
     //Ball ball = null;
-    ArrayList<Ball> balls;
+    public ArrayList<Ball> balls;
 
     int numberOfBalls = 0;
 
@@ -147,6 +147,9 @@ public class GameBoard extends JPanel
 		    // Place lose life powerup
 		    else if (powerType == PowerType.LOSE_LIFE) {
 			powers[i][j] = new LoseLifePower(j*50, i*30+50, this);
+		    }
+		    else if (powerType == PowerType.GHOSTBALL) {
+			powers[i][j] = new GhostPower(j*50, i*30+50, this);
 		    }
 		}
 
