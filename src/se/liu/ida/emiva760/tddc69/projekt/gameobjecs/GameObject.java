@@ -10,12 +10,6 @@ import java.net.URL;
  */
 public abstract class GameObject extends Point2D.Double
 {
-    // The name of the sprite to be drawn
-    private String spriteFileName;
-
-    protected double x;
-    protected double y;
-
     private int width;
     private int height;
 
@@ -23,9 +17,6 @@ public abstract class GameObject extends Point2D.Double
 
     protected GameObject(double x, double y, String spriteFileName) {
 	super(x, y);
-	this.x = x;
-	this.y = y;
-	this.spriteFileName = spriteFileName;
 
 	// Loads sprite URL from the sprite name variable
 	URL spriteUrl = getClass().getResource("/se/liu/ida/emiva760/tddc69/projekt/resources/" + spriteFileName);
@@ -41,16 +32,6 @@ public abstract class GameObject extends Point2D.Double
 
 	width = sprite.getWidth(null);
 	height = sprite.getHeight(null);
-    }
-
-    @Override
-    public double getX() {
-	return x;
-    }
-
-    @Override
-    public double getY() {
-	return y;
     }
 
     public void setX(final double x) {
