@@ -124,7 +124,7 @@ public class GameBoard extends JPanel
     }
 
     public void gameInit() {
-	balls.add(new Ball(BALL_STARTX, BALL_STARTY));
+	balls.add(new NormalBall(BALL_STARTX, BALL_STARTY));
 	numberOfBalls = 1;
 	paddle = new Paddle(PADDLE_STARTX, PADDLE_STARTY);
 
@@ -174,7 +174,7 @@ public class GameBoard extends JPanel
 	lives -= 1;
 	balls.clear();
 	numberOfBalls = 1;
-	balls.add(new Ball(BALL_STARTX, BALL_STARTY));
+	balls.add(new NormalBall(BALL_STARTX, BALL_STARTY));
 	paddle.resetState();
     }
 

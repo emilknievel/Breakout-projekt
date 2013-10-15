@@ -2,14 +2,14 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
 import se.liu.ida.emiva760.tddc69.projekt.*;
 //TODO: Add more types of balls. Ex: ghost ball, small ball, big ball, extra balls
-public class Ball extends GameObject {
+public abstract class Ball extends GameObject {
     private double xDir;
     private double yDir;
     private int startingHeight = GameBoard.BALL_STARTY;
     private int startingX = GameBoard.BALL_STARTX;
 
-    public Ball(double x, double y) {
-	super(x, y, "ball.png");
+    protected Ball(double x, double y, String ballType) {
+	super(x, y, ballType);
 	xDir = 1;
 	yDir = -1;
     }
