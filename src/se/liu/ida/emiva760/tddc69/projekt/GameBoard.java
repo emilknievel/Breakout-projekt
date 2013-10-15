@@ -5,6 +5,7 @@ import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
@@ -67,7 +68,11 @@ public class GameBoard extends JPanel
 
     Timer gameTimer;
     String message = "Game Over! ";
-    Ball ball = null;
+    //Ball ball = null;
+    ArrayList<Ball> balls;
+
+    int numberOfBalls = 0;
+
     Paddle paddle = null;
     //TODO: Maybe change the arrays to ArrayLists
     Brick[][] bricks;
@@ -94,8 +99,8 @@ public class GameBoard extends JPanel
 	addKeyListener(new SteeringAdapter());
 	setFocusable(true);
 
+	balls = new ArrayList<>();
 	bricks = new Brick[ROWS][COLUMNS];
-
 	powers = new PowerUp[ROWS][COLUMNS];
 
 	setDoubleBuffered(true);
@@ -119,7 +124,8 @@ public class GameBoard extends JPanel
     }
 
     public void gameInit() {
-	ball = new Ball(BALL_STARTX, BALL_STARTY);
+	balls.add(new Ball(BALL_STARTX, BALL_STARTY));
+	numberOfBalls = 1;
 	paddle = new Paddle(PADDLE_STARTX, PADDLE_STARTY);
 
 	// Place the blocks
@@ -166,7 +172,9 @@ public class GameBoard extends JPanel
      */
     public void nextLife() {
 	lives -= 1;
-	ball = new Ball(BALL_STARTX, BALL_STARTY);
+	balls.clear();
+	numberOfBalls = 1;
+	balls.add(new Ball(BALL_STARTX, BALL_STARTY));
 	paddle.resetState();
     }
 
@@ -188,8 +196,12 @@ public class GameBoard extends JPanel
 			  WIDTH - WIDTH / 2, 10);
 	    g2.drawString(livesString, 10, 10);
 
-	    g2.drawImage(ball.getImage(), (int)ball.getX(), (int)ball.getY(),
-			 ball.getWidth(), ball.getHeight(), this);
+	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
+		g2.drawImage(balls.get(ballIndex).getImage(), (int) balls.get(ballIndex).getX(),
+			     (int) balls.get(ballIndex).getY(), balls.get(ballIndex).getWidth(),
+			     balls.get(ballIndex).getHeight(), this);
+	    }
+
 	    g2.drawImage(paddle.getImage(), (int)paddle.getX(), (int)paddle.getY(),
 			 paddle.getWidth(), paddle.getHeight(), this);
 
@@ -245,7 +257,9 @@ public class GameBoard extends JPanel
 
     class GameTask extends TimerTask {
 	public void run() {
-	    ball.move();
+	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
+		balls.get(ballIndex).move();
+	    }
 	    paddle.move();
 	    for (int i = 0; i < ROWS; i++) {
 		for (int j = 0; j < COLUMNS; j++) {
@@ -372,12 +386,15 @@ public class GameBoard extends JPanel
      * Lose 1 life if the ball has reached the bottom
      */
     private void ballMissed() {
-	if (ball.getRect().getMaxY() > HEIGHT) {
-	    if (lives == 0) {
+	for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
+	    if (balls.get(ballIndex).getRect().getMaxY() > HEIGHT) {
+		numberOfBalls--;
+		if (numberOfBalls > 0) {
+		    nextLife();
+		    livesString = "Lives: " + Integer.toString(lives);
+		    return;
+		}
 		stopGame();
-	    } else {
-		nextLife();
-		livesString = "Lives: " + Integer.toString(lives);
 	    }
 	}
     }
@@ -404,11 +421,13 @@ public class GameBoard extends JPanel
      * Adjust the direction of the ball relating to where it hits the paddle.
      */
     private void ballPaddleCollision() {
-	if (ball.intersects(paddle)) {
-	    if (ball.intersectsFromSide(paddle)) {
-		ball.flipXDir();
-	    } else {
-		ball.flipYDir();
+	for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
+	    if (balls.get(ballIndex).intersects(paddle)) {
+		if (balls.get(ballIndex).intersectsFromSide(paddle)) {
+		    balls.get(ballIndex).flipXDir();
+		} else {
+		    balls.get(ballIndex).flipYDir();
+		}
 	    }
 	}
     }
@@ -420,31 +439,33 @@ public class GameBoard extends JPanel
     private void ballBrickCollision() {
 	for (int i = 0; i < ROWS; i++) {
 	    for (int j = 0; j < COLUMNS; j++) {
-		if (ball.intersects(bricks[i][j]) && !bricks[i][j].isDestroyed()) {
-		    if(ball.intersectsFromSide(bricks[i][j])) {
-			ball.flipXDir();
-		    } else {
-			ball.flipYDir();
-		    }
+		for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
+		    if (balls.get(ballIndex).intersects(bricks[i][j]) && !bricks[i][j].isDestroyed()) {
+			if(balls.get(ballIndex).intersectsFromSide(bricks[i][j])) {
+			    balls.get(ballIndex).flipXDir();
+			} else {
+			    balls.get(ballIndex).flipYDir();
+			}
 
-		    bricks[i][j].setDestroyed(true);
-
-		    if (bricks[i][j].getType() == BrickType.NORMAL) {
-			score += 100;
-			triggerPower(powers[i][j]);
-		    }
-		    else if (bricks[i][j].getType() == BrickType.SOLID &&
-			     bricks[i][j].getHealth() == 0) {
 			bricks[i][j].setDestroyed(true);
-			score += 50;
-			triggerPower(powers[i][j]);
+
+			if (bricks[i][j].getType() == BrickType.NORMAL) {
+			    score += 100;
+			    triggerPower(powers[i][j]);
+			}
+			else if (bricks[i][j].getType() == BrickType.SOLID &&
+				 bricks[i][j].getHealth() == 0) {
+			    bricks[i][j].setDestroyed(true);
+			    score += 50;
+			    triggerPower(powers[i][j]);
+			}
+			else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
+			    destroyNeighbors(bricks, i, j);
+			    triggerPower(powers[i][j]);
+			    score += 100;
+			}
+			scoreString = "Score: " + Integer.toString(score);
 		    }
-		    else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
-			destroyNeighbors(bricks, i, j);
-			triggerPower(powers[i][j]);
-			score += 100;
-		    }
-		    scoreString = "Score: " + Integer.toString(score);
 		}
 	    }
 	}
