@@ -265,7 +265,7 @@ public class GameBoard extends JPanel
     class GameTask extends TimerTask {
 	public void run() {
 	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
-		balls.get(ballIndex).move();
+		balls.get(ballIndex).move(); // Useful if I get time to add extra ball powerup
 	    }
 	    paddle.move();
 	    for (int i = 0; i < ROWS; i++) {
