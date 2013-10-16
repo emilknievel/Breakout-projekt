@@ -7,6 +7,7 @@ import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
  */
 public class PointsPower extends PowerUp
 {
+    private static final int EXTRAPOINTS = 300;
 
     public PointsPower(double x, double y, GameBoard gameBoard) {
 	super(x, y, "power_points.png", gameBoard);
@@ -14,8 +15,8 @@ public class PointsPower extends PowerUp
 
     @Override
     public void usePowerUp() {
-	final int extraPoints = 300;
-	gameBoard.score += extraPoints;
+
+	gameBoard.score += EXTRAPOINTS;
 	gameBoard.scoreString = "Score: " + Integer.toString(gameBoard.score);
     }
 }

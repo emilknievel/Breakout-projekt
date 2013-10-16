@@ -2,6 +2,9 @@ package se.liu.ida.emiva760.tddc69.projekt;
 
 import javax.swing.*;
 
+/**
+ * The JFrame where the game is drawn.
+ */
 public class Brejkaot extends JFrame {
     public Brejkaot()
     {

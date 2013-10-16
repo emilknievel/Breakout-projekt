@@ -5,6 +5,7 @@ import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,8 +69,11 @@ public class GameBoard extends JPanel
 
     Timer gameTimer;
     String message = "Game Over! ";
-    //Ball ball = null;
-    public ArrayList<Ball> balls;
+
+    /**
+     * Contains all of the balls in the game. Useful for spawning of multiple balls.
+     */
+    public List<Ball> balls;
 
     int numberOfBalls = 0;
 
@@ -90,7 +94,14 @@ public class GameBoard extends JPanel
      */
     public int lives = 2;
 
+    /**
+     * String representation of the score.
+     */
     public String scoreString = "Score: " + Integer.toString(score);
+
+    /**
+     * String representation of lives.
+     */
     public String livesString = "Lives: " + Integer.toString(lives);
 
     private static Random random = new Random();
