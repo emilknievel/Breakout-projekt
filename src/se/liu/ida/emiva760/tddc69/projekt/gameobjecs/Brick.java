@@ -6,6 +6,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 public abstract class Brick extends GameObject {
     boolean destroyed;
     protected int health;
+    protected int score;
     protected BrickType type = null;
 
     protected Brick(double x, double y, String brickType) {
@@ -34,6 +35,10 @@ public abstract class Brick extends GameObject {
 
     public int getHealth() {
 	return health;
+    }
+
+    public int getScore() {
+	return score;
     }
 
     public BrickType getType() {

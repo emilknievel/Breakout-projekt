@@ -67,6 +67,26 @@ public class GameBoard extends JPanel
      */
     private static final int COLUMNS = 6;
 
+    /**
+     * Offset for brick spawning so that there is space above the bricks
+     */
+    private static final int TOPSPACING = 30;
+
+    /**
+     * The height of a brick. Used in gameInit to make sure that the bricks spawn right above eachother
+     */
+    private static final int BRICKHEIGHT = 30;
+
+    /**
+     * The width of a brick. Used in gameInit to make sure that the bricks spawn right next to eachother
+     */
+    private static final int BRICKWIDTH = 50;
+
+    /**
+     * The total number of bricks in the game
+     */
+    private static final int NUMBEROFBRICKS = ROWS * COLUMNS;
+
     Timer gameTimer;
     String message = "Game Over! ";
 
@@ -107,7 +127,7 @@ public class GameBoard extends JPanel
     private static Random random = new Random();
 
     public GameBoard() {
-	addKeyListener(new SteeringAdapter());
+	addKeyListener(new SteeringAdapter()); // Adds a listener that listens for key events
 	setFocusable(true);
 
 	balls = new ArrayList<>();
@@ -117,6 +137,7 @@ public class GameBoard extends JPanel
 	setDoubleBuffered(true);
 	gameTimer = new Timer();
 	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10); // How fast the game loops
+	gameInit();
 
     }
 
@@ -129,11 +150,9 @@ public class GameBoard extends JPanel
 	return clazz.getEnumConstants()[x];
     }
 
-    public void addNotify() {
-	super.addNotify();
-	gameInit();
-    }
-
+    /**
+     * Places the game objects at their initial positions.
+     */
     public void gameInit() {
 	balls.add(new NormalBall(BALL_STARTX, BALL_STARTY));
 	numberOfBalls = 1;
@@ -149,32 +168,33 @@ public class GameBoard extends JPanel
 		if (spawnInt == 1) {
 		    // Place extra point powerup
 		    if (powerType == PowerType.POINTS) {
-			powers[i][j] = new PointsPower(j*50, i*30+50, this);
+			powers[i][j] = new PointsPower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
 		    // Place extra life powerup
 		    else if (powerType == PowerType.EXTRA_LIFE) {
-			powers[i][j] = new ExtraLifePower(j*50, i*30+50, this);
+			powers[i][j] = new ExtraLifePower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
 		    // Place lose life powerup
 		    else if (powerType == PowerType.LOSE_LIFE) {
-			powers[i][j] = new LoseLifePower(j*50, i*30+50, this);
+			powers[i][j] = new LoseLifePower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
+		    // Place ghost ball powerup
 		    else if (powerType == PowerType.GHOSTBALL) {
-			powers[i][j] = new GhostPower(j*50, i*30+50, this);
+			powers[i][j] = new GhostPower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
 		}
 
 		// Place normal brick
 		if (brickType == BrickType.NORMAL) {
-		    bricks[i][j] = new BlueBrick(j*50, i*30+50);
+		    bricks[i][j] = new BlueBrick(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING);
 		}
 		// Place explosive brick
 		else if (brickType == BrickType.EXPLOSIVE) {
-		    bricks[i][j] = new ExplosiveBrick(j*50, i*30+50);
+		    bricks[i][j] = new ExplosiveBrick(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING);
 		}
 		// Place solid brick
 		else if (brickType == BrickType.SOLID) {
-		    bricks[i][j] = new SolidBrick(j*50, i*30+50);
+		    bricks[i][j] = new SolidBrick(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING);
 		}
 
 	    }
@@ -261,7 +281,8 @@ public class GameBoard extends JPanel
     }
 
     /**
-     * Controls the steering of the paddle
+     * Controls the steering of the paddle. Extends KeyAdapter that is an abstract class for receiving keyboard commands.
+     * KeyAdapter implements KeyListener
      */
     private class SteeringAdapter extends KeyAdapter {
 	public void keyReleased(KeyEvent keyEvent) {
@@ -382,7 +403,7 @@ public class GameBoard extends JPanel
 	}
     }
 
-    // Functions to test whether there is a brick next to the currently checked brick ////////////////////
+    // Functions to test whether there exists a brick next to the currently checked brick ////////////////////
     private boolean isBlockAbove(Brick[][] array, int i, int j) {
 	return i > 0 && (!array[i - 1][j].isDestroyed());
     }
@@ -425,7 +446,7 @@ public class GameBoard extends JPanel
 		    blocksDestroyed++;
 		}
 
-		if (blocksDestroyed == 30) {
+		if (blocksDestroyed == NUMBEROFBRICKS) {
 		    message = "You win! ";
 		    stopGame();
 		}
@@ -468,19 +489,19 @@ public class GameBoard extends JPanel
 			bricks[i][j].setDestroyed(true);
 
 			if (bricks[i][j].getType() == BrickType.NORMAL) {
-			    score += 100;
+			    score += bricks[i][j].getScore();
 			    triggerPower(powers[i][j]);
 			}
 			else if (bricks[i][j].getType() == BrickType.SOLID &&
 				 bricks[i][j].getHealth() == 0) {
 			    bricks[i][j].setDestroyed(true);
-			    score += 50;
+			    score += bricks[i][j].getScore();
 			    triggerPower(powers[i][j]);
 			}
 			else if (bricks[i][j].getType() == BrickType.EXPLOSIVE) {
 			    destroyNeighbors(bricks, i, j);
 			    triggerPower(powers[i][j]);
-			    score += 100;
+			    score += bricks[i][j].getScore();
 			}
 			scoreString = "Score: " + Integer.toString(score);
 		    }

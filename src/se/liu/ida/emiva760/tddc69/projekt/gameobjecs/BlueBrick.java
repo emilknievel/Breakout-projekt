@@ -9,5 +9,6 @@ public class BlueBrick extends Brick
 	super(x, y, "bluebrick.png");
 	health = 0;
 	type = BrickType.NORMAL;
+	score = 100;
     }
 }

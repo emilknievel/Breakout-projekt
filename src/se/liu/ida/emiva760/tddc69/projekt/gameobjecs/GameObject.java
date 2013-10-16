@@ -70,6 +70,6 @@ public abstract class GameObject extends Point2D.Double
     }
 
     public boolean intersectsFromSide(GameObject gameObject) {
-	return intersects(gameObject) && (((x + width) < gameObject.x) || (x > gameObject.x + gameObject.width));
+	return intersects(gameObject) && ((y + height) < (gameObject.y + gameObject.height)) && (y > gameObject.y);
     }
 }

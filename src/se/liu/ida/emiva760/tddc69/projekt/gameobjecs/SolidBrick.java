@@ -9,5 +9,6 @@ public class SolidBrick extends Brick
 	super(x, y, "solidbrick.png");
 	health = 3;
 	type = BrickType.SOLID;
+	score = 50;
     }
 }
