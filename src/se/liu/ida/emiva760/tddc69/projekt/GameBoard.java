@@ -18,9 +18,34 @@ import javax.swing.JPanel;
 public class GameBoard extends JPanel
 {
     /**
+     * The number of rows of bricks
+     */
+    private static final int ROWS = 5;
+
+    /**
+     * The number of columns of bricks
+     */
+    private static final int COLUMNS = 6;
+
+    /**
+     * The total number of bricks in the game
+     */
+    private static final int NUMBEROFBRICKS = ROWS * COLUMNS;
+
+    /**
+     * The height of a brick. Used in gameInit to make sure that the bricks spawn right above eachother
+     */
+    private static final int BRICKHEIGHT = 30;
+
+    /**
+     * The width of a brick. Used in gameInit to make sure that the bricks spawn right next to eachother
+     */
+    private static final int BRICKWIDTH = 50;
+
+    /**
      * Width of the GameBoard
      */
-    public static final int WIDTH = 300;
+    public static final int WIDTH = BRICKWIDTH * COLUMNS;
 
     /**
      * Height of the GameBoard
@@ -57,35 +82,16 @@ public class GameBoard extends JPanel
      */
     public static final int PADDLE_STARTX = WIDTH / 2 - (WIDTH - PADDLE_RIGHT);
 
-    /**
-     * The number of rows of bricks
-     */
-    private static final int ROWS = 5;
 
-    /**
-     * The number of columns of bricks
-     */
-    private static final int COLUMNS = 6;
 
     /**
      * Offset for brick spawning so that there is space above the bricks
      */
     private static final int TOPSPACING = 30;
 
-    /**
-     * The height of a brick. Used in gameInit to make sure that the bricks spawn right above eachother
-     */
-    private static final int BRICKHEIGHT = 30;
 
-    /**
-     * The width of a brick. Used in gameInit to make sure that the bricks spawn right next to eachother
-     */
-    private static final int BRICKWIDTH = 50;
 
-    /**
-     * The total number of bricks in the game
-     */
-    private static final int NUMBEROFBRICKS = ROWS * COLUMNS;
+
 
     Timer gameTimer;
     String message = "Game Over! ";
