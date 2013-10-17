@@ -75,6 +75,6 @@ public abstract class GameObject extends Point2D.Double
      * @return if the object intersects from the side.
      */
     public boolean intersectsFromSide(GameObject gameObject) {
-	return intersects(gameObject) && ((((y + height) < (gameObject.y + gameObject.height)) && (y > gameObject.y)));
+	return intersects(gameObject) && (((y + height) < (gameObject.y + gameObject.height)) && (y > gameObject.y));
     }
 }

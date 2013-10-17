@@ -136,7 +136,8 @@ public class GameBoard extends JPanel
 
 	setDoubleBuffered(true);
 	gameTimer = new Timer();
-	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10); // How fast the game loops
+	// Delays the GameTask for a short while and specifies how fast the task updates.
+	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10);
 	gameInit();
 
     }
@@ -166,7 +167,7 @@ public class GameBoard extends JPanel
 		BrickType brickType = randomEnum(BrickType.class);
 		PowerType powerType = randomEnum(PowerType.class);
 		if (spawnInt == 1) {
-		    // Place extra point powerup
+		    // Place extra point powerup. i corresponds to y and j to x.
 		    if (powerType == PowerType.POINTS) {
 			powers[i][j] = new PointsPower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
