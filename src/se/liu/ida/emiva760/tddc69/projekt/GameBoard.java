@@ -55,12 +55,12 @@ public class GameBoard extends JPanel
     /**
      * How far to the right the paddle can reach
      */
-    public static final int PADDLE_RIGHT = 250;
+    public static final int PADDLE_RIGHT = WIDTH - 50;
 
     /**
      * How far to the right the ball can reach
-     * */
-    public static final int BALL_RIGHT = 290;
+     */
+    public static final int BALL_RIGHT = WIDTH - 10;
 
     /**
      * The y position of the ball at game start
@@ -89,11 +89,11 @@ public class GameBoard extends JPanel
      */
     private static final int TOPSPACING = 30;
 
-
-
-
-
+    /**
+     * Used to control the game speed.
+     */
     Timer gameTimer;
+
     String message = "Game Over! ";
 
     /**
@@ -104,7 +104,6 @@ public class GameBoard extends JPanel
     int numberOfBalls = 0;
 
     Paddle paddle = null;
-    //TODO: Maybe change the arrays to ArrayLists
     Brick[][] bricks;
     PowerUp[][] powers;
 
