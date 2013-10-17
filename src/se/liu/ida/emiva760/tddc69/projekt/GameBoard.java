@@ -275,8 +275,6 @@ public class GameBoard extends JPanel
 		     endMetrics.stringWidth(message + scoreString))/2,
 		    WIDTH /2);
 	}
-
-	Toolkit.getDefaultToolkit().sync();
 	g2.dispose();
     }
 
