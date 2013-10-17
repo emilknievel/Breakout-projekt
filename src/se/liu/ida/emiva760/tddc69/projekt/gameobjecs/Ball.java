@@ -40,14 +40,6 @@ public abstract class Ball extends GameObject {
 	}
     }
 
-    /**
-     * Place at starting position
-     */
-    public void resetState() {
-	x = startingX;
-	y = startingHeight;
-    }
-
     public void setXDir(double x)
     {
 	xDir = x;
@@ -66,14 +58,6 @@ public abstract class Ball extends GameObject {
     public double getYDir()
     {
 	return yDir;
-    }
-
-    public int getStartingHeight() {
-	return startingHeight;
-    }
-
-    public int getStartingX() {
-	return startingX;
     }
 
     public void flipXDir() {
