@@ -9,6 +9,6 @@ public class SolidBrick extends Brick
 	super(x, y, "solidbrick.png");
 	health = 3;
 	type = BrickType.SOLID;
-	score = 50;
+	score = 50; // the number of points added when the brick is destroyed.
     }
 }

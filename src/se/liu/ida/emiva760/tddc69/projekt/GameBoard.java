@@ -240,7 +240,7 @@ public class GameBoard extends JPanel
 	// Only draw when the game is running
 	if (gameRunning) {
 	    // draws the text in the game
-	    Font gameFont = new Font("Sans", Font.BOLD, 11);
+	    Font gameFont = new Font("Sans", Font.BOLD, 11); // 11 is the size of the font
 	    g2.setFont(gameFont);
 	    g2.drawString(scoreString,
 			  WIDTH - WIDTH / 2, 10);
@@ -276,7 +276,7 @@ public class GameBoard extends JPanel
 		}
 	    }
 	} else { // Tell the player that the game is over
-	    Font endFont = new Font("Sans", Font.BOLD, 15);
+	    Font endFont = new Font("Sans", Font.BOLD, 15); // 15 is the size of the font
 	    FontMetrics endMetrics = this.getFontMetrics(endFont);
 
 	    g2.setColor(Color.BLACK);
