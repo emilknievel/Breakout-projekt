@@ -101,7 +101,10 @@ public class GameBoard extends JPanel
      */
     public List<Ball> balls;
 
-    int numberOfBalls = 0;
+    /**
+     * The amount of balls in the game.
+     */
+    public int numberOfBalls = 0;
 
     Paddle paddle = null;
     Brick[][] bricks;
@@ -187,6 +190,9 @@ public class GameBoard extends JPanel
 		    // Place ghost ball powerup
 		    else if (powerType == PowerType.GHOSTBALL) {
 			powers[i][j] = new GhostPower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
+		    }
+		    else if (powerType == PowerType.EXTRA_BALL) {
+			powers[i][j] = new ExtraBallPower(j*BRICKWIDTH, i*BRICKHEIGHT+TOPSPACING, this);
 		    }
 		}
 
@@ -301,7 +307,7 @@ public class GameBoard extends JPanel
     class GameTask extends TimerTask {
 	public void run() {
 	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
-		balls.get(ballIndex).move(); // Useful if I get time to add extra ball powerup
+		balls.get(ballIndex).move();
 	    }
 	    paddle.move();
 	    for (int i = 0; i < ROWS; i++) {
@@ -341,8 +347,8 @@ public class GameBoard extends JPanel
     public void checkCollision() {
 	ballMissed();
 
-	int destroyedBlocksCounter = 0;
-	checkWinCondition(destroyedBlocksCounter);
+	int destroyedBricksCounter = 0;
+	checkWinCondition(destroyedBricksCounter);
 
 	ballPaddleCollision();
 
@@ -431,6 +437,9 @@ public class GameBoard extends JPanel
     private void ballMissed() {
 	for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
 	    if (balls.get(ballIndex).getRect().getMaxY() > HEIGHT) {
+		System.out.println(balls.size());
+		balls.remove(ballIndex);
+		System.out.println(balls.size());
 		numberOfBalls--;
 		if (numberOfBalls == 0) {
 		    nextLife();
