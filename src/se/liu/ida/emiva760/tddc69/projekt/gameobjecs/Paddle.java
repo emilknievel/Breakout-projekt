@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
  */
 public class Paddle extends GameObject
 {
-    private int dX;
+    private int xDir;
 
     public Paddle(double x, double y) {
 	super(x, y, "paddle.png");
@@ -20,7 +20,7 @@ public class Paddle extends GameObject
      * reaches an edge.
      */
     public void move() {
-	x += dX;
+	x += xDir;
 	if (x <= 2)
 	    x = 2;
 	if (x >= GameBoard.PADDLE_RIGHT)
@@ -35,12 +35,12 @@ public class Paddle extends GameObject
 	int key = keyEvent.getKeyCode();
 
 	if (key == KeyEvent.VK_LEFT) {
-	    dX = -2;
+	    xDir = -2;
 
 	}
 
 	if (key == KeyEvent.VK_RIGHT) {
-	    dX = 2;
+	    xDir = 2;
 	}
     }
 
@@ -51,11 +51,11 @@ public class Paddle extends GameObject
 	int key = keyEvent.getKeyCode();
 
 	if (key == KeyEvent.VK_LEFT) {
-	    dX = 0;
+	    xDir = 0;
 	}
 
 	if (key == KeyEvent.VK_RIGHT) {
-	    dX = 0;
+	    xDir = 0;
 	}
     }
 
@@ -67,11 +67,11 @@ public class Paddle extends GameObject
 	y = GameBoard.PADDLE_STARTY;
     }
 
-    public void setdX(final int dX) {
-	this.dX = dX;
+    public void setxDir(final int xDir) {
+	this.xDir = xDir;
     }
 
-    public int getdX() {
-	return dX;
+    public int getxDir() {
+	return xDir;
     }
 }

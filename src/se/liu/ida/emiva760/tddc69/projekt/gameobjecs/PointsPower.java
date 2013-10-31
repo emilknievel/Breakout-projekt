@@ -13,9 +13,11 @@ public class PointsPower extends PowerUp
 	super(x, y, "power_points.png", gameBoard);
     }
 
+    /**
+     * Give the player extrapoints
+     */
     @Override
     public void usePowerUp() {
-
 	gameBoard.score += EXTRAPOINTS;
 	gameBoard.scoreString = "Score: " + Integer.toString(gameBoard.score);
     }

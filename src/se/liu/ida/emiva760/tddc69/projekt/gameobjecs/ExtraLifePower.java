@@ -11,6 +11,9 @@ public class ExtraLifePower extends PowerUp
 	super(x, y, "power_extralife.png", gameBoard);
     }
 
+    /**
+     * Give the player one extra life and update the score string.
+     */
     @Override
     public void usePowerUp() {
 	gameBoard.lives += 1;

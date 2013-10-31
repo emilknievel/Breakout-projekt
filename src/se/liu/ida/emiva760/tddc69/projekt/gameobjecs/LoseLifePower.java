@@ -11,6 +11,9 @@ public class LoseLifePower extends PowerUp
 	super(x, y, "power_loselife.png", gameBoard);
     }
 
+    /**
+     * Make the player lose one life, or if its at 0 stop the game.
+     */
     @Override
     public void usePowerUp() {
 	if (gameBoard.lives == 0) {

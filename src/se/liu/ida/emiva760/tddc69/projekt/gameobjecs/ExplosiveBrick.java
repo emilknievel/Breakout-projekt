@@ -1,7 +1,7 @@
 package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
 /**
- * A brick that explodes on impact. 
+ * A brick that blows up on impact.
  */
 public class ExplosiveBrick extends Brick
 {

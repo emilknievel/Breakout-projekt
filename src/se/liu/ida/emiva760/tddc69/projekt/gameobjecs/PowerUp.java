@@ -20,9 +20,15 @@ public abstract class PowerUp extends GameObject
         y += yDir;
     }
 
+    /**
+     * Tell the powerup to fall down.
+     */
     public void triggerFall() {
         yDir = 1;
     }
 
+    /**
+     * What the powerup should do when picked up. Specified by the different powerups
+     */
     public abstract void usePowerUp();
 }
