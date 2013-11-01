@@ -80,7 +80,7 @@ public class GameBoard extends JPanel
     /**
      * The x position of the paddle at game start
      */
-    public static final int PADDLE_STARTX = WIDTH / 2 - (WIDTH - PADDLE_RIGHT);
+    public static final int PADDLE_STARTX = (WIDTH / 2) - (WIDTH - PADDLE_RIGHT);
 
 
 
@@ -143,16 +143,16 @@ public class GameBoard extends JPanel
 	powers = new PowerUp[ROWS][COLUMNS];
 
 	setDoubleBuffered(true);
-	gameTimer = new Timer();
+	gameTimer = new Timer(); // Will control the game loop
 	// Delays the GameTask for a short while and specifies how fast the task updates.
-	gameTimer.scheduleAtFixedRate(new GameTask(), 1000, 10);
+	gameTimer.scheduleAtFixedRate(new GameTask(), 500, 5); // 500 ms delay. 5 ms between ticks.
 	gameInit();
-
     }
 
     /**
      * Random enum selection method found at
      * http://stackoverflow.com/questions/1972392/java-pick-a-random-value-from-an-enum
+     * Randomizes an enum from the specified class.
      */
     public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
 	int x = random.nextInt(clazz.getEnumConstants().length);
@@ -172,7 +172,7 @@ public class GameBoard extends JPanel
 	for (int i = 0; i < ROWS; i++) {
 	    for (int j = 0; j < COLUMNS; j++) {
 		int spawnInt = random.nextInt(5); // Generates a random number to control whether a powerup should be created
-		BrickType brickType = randomEnum(BrickType.class);
+		BrickType brickType = randomEnum(BrickType.class); // Random BrickType
 		PowerType powerType = randomEnum(PowerType.class);
 		if (spawnInt == 1) {
 		    // Place extra point powerup. i corresponds to y and j to x.
@@ -295,15 +295,18 @@ public class GameBoard extends JPanel
      * KeyAdapter implements KeyListener
      */
     private class SteeringAdapter extends KeyAdapter {
-	public void keyReleased(KeyEvent keyEvent) {
+	@Override public void keyReleased(KeyEvent keyEvent) {
 	    paddle.keyReleased(keyEvent);
 	}
 
-	public void keyPressed(KeyEvent keyEvent) {
+	@Override public void keyPressed(KeyEvent keyEvent) {
 	    paddle.keyPressed(keyEvent);
 	}
     }
 
+    /**
+     * Controls the game loop. Five milliseconds between gameticks.
+     */
     class GameTask extends TimerTask {
 	public void run() {
 	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
@@ -318,12 +321,10 @@ public class GameBoard extends JPanel
 		    if (pickedUpPower(powers[i][j])) {
 			powers[i][j].usePowerUp();
 			powers[i][j] = null;
-			repaint();
 		    }
 		    if (powers[i][j] != null &&
 			powers[i][j].getY() > HEIGHT) {
 			powers[i][j] = null;
-			repaint();
 		    }
 		}
 	    }
@@ -437,9 +438,7 @@ public class GameBoard extends JPanel
     private void ballMissed() {
 	for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
 	    if (balls.get(ballIndex).getRect().getMaxY() > HEIGHT) {
-		System.out.println(balls.size());
 		balls.remove(ballIndex);
-		System.out.println(balls.size());
 		numberOfBalls--;
 		if (numberOfBalls == 0) {
 		    nextLife();

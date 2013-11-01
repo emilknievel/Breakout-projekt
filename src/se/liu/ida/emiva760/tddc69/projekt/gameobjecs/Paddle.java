@@ -36,7 +36,6 @@ public class Paddle extends GameObject
 
 	if (key == KeyEvent.VK_LEFT) {
 	    xDir = -2;
-
 	}
 
 	if (key == KeyEvent.VK_RIGHT) {

@@ -21,7 +21,8 @@ public class ExtraBallPower extends PowerUp
     @Override
     public void usePowerUp() {
 	gameBoard.balls.add(new NormalBall(gameBoard.balls.get(0).getX() + xOffset, gameBoard.balls.get(0).getY() + yOffset));
-	gameBoard.balls.get(gameBoard.balls.size() - 1).flipYDir(); // Flip the y-direction of the new ball
 	gameBoard.numberOfBalls += 1;
+	gameBoard.balls.get(gameBoard.numberOfBalls - 1).flipYDir(); // Flip the y-direction of the new ball
+
     }
 }
