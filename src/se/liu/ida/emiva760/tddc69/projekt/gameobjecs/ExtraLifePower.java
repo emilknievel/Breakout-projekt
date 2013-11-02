@@ -16,7 +16,7 @@ public class ExtraLifePower extends PowerUp
      */
     @Override
     public void usePowerUp() {
-	gameBoard.lives += 1;
-	gameBoard.livesString = "Lives: " + Integer.toString(gameBoard.lives);
+	gameBoard.incrementLives();
+	gameBoard.setLivesString("Lives: " + Integer.toString(gameBoard.getLives())); // Update livesstring
     }
 }

@@ -104,7 +104,7 @@ public class GameBoard extends JPanel
     /**
      * The amount of balls in the game.
      */
-    public int numberOfBalls = 0;
+    private int numberOfBalls = 0;
 
     Paddle paddle = null;
     Brick[][] bricks;
@@ -115,22 +115,22 @@ public class GameBoard extends JPanel
     /**
      * The player's score
      */
-    public int score = 0;
+    private int score = 0;
 
     /**
      * The player's lives
      */
-    public int lives = 2;
+    private int lives = 2;
 
     /**
      * String representation of the score.
      */
-    public String scoreString = "Score: " + Integer.toString(score);
+    private String scoreString = "Score: " + Integer.toString(score);
 
     /**
      * String representation of lives.
      */
-    public String livesString = "Lives: " + Integer.toString(lives);
+    private String livesString = "Lives: " + Integer.toString(lives);
 
     private static Random random = new Random();
 
@@ -530,4 +530,39 @@ public class GameBoard extends JPanel
 	    power.triggerFall();
     }
 
+    public int getNumberOfBalls() {
+	return numberOfBalls;
+    }
+
+    public void incrementNumberOfBalls() {
+	numberOfBalls++;
+    }
+
+    public int getScore() {
+	return score;
+    }
+
+    public void setScore(final int score) {
+	this.score = score;
+    }
+
+    public void setScoreString(final String scoreString) {
+	this.scoreString = scoreString;
+    }
+
+    public void setLivesString(final String livesString) {
+	this.livesString = livesString;
+    }
+
+    public int getLives() {
+	return lives;
+    }
+
+    public void incrementLives() {
+	lives++;
+    }
+
+    public void decrementLives() {
+	lives--;
+    }
 }

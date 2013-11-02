@@ -16,11 +16,11 @@ public class LoseLifePower extends PowerUp
      */
     @Override
     public void usePowerUp() {
-	if (gameBoard.lives == 0) {
+	if (gameBoard.getLives() == 0) {
 	    gameBoard.stopGame();
 	} else {
-	    gameBoard.lives -= 1;
-	    gameBoard.livesString = "Lives: " + Integer.toString(gameBoard.lives);
+	    gameBoard.decrementLives();
+	    gameBoard.setLivesString("Lives: " + Integer.toString(gameBoard.getLives()));
 	}
     }
 }

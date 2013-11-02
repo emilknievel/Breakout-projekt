@@ -18,7 +18,7 @@ public class PointsPower extends PowerUp
      */
     @Override
     public void usePowerUp() {
-	gameBoard.score += EXTRAPOINTS;
-	gameBoard.scoreString = "Score: " + Integer.toString(gameBoard.score);
+	gameBoard.setScore(gameBoard.getScore() + EXTRAPOINTS);
+	gameBoard.setScoreString("Score: " + Integer.toString(gameBoard.getScore()));
     }
 }
