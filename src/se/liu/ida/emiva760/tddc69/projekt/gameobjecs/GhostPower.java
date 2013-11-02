@@ -2,6 +2,9 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
 import se.liu.ida.emiva760.tddc69.projekt.GameBoard;
 
+/**
+ * Converts the first ball into a ghostball.
+ */
 public class GhostPower extends PowerUp
 {
     public GhostPower(final double x, final double y, final GameBoard gameBoard) {

@@ -65,12 +65,4 @@ public class Paddle extends GameObject
 	x = GameBoard.PADDLE_STARTX;
 	y = GameBoard.PADDLE_STARTY;
     }
-
-    public void setxDir(final int xDir) {
-	this.xDir = xDir;
-    }
-
-    public int getxDir() {
-	return xDir;
-    }
 }

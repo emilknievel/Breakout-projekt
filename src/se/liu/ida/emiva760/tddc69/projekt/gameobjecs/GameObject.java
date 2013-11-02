@@ -32,14 +32,6 @@ public abstract class GameObject extends Point2D.Double
 	height = sprite.getHeight(null);
     }
 
-    public void setX(final double x) {
-	this.x = x;
-    }
-
-    public void setY(final double y) {
-	this.y = y;
-    }
-
     public int getWidth() {
 	return width;
     }
