@@ -23,6 +23,7 @@ public abstract class GameObject extends Point2D.Double
 	if (spriteUrl != null) {
 	    icon = new ImageIcon(spriteUrl);
 	} else {
+	    // Tells the user that the file isn't found instead of just a nullpointer exception
 	    System.err.println("Couldn't find file: " + spriteFileName);
 	}
 

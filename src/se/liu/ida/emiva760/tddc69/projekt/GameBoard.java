@@ -96,10 +96,7 @@ public class GameBoard extends JPanel
 
     String message = "Game Over! ";
 
-    /**
-     * Contains all of the balls in the game. Useful for spawning of multiple balls.
-     */
-    public List<Ball> balls;
+    private List<Ball> balls;
 
     /**
      * The amount of balls in the game.
@@ -137,7 +134,9 @@ public class GameBoard extends JPanel
     public GameBoard() {
 	addKeyListener(new SteeringAdapter()); // Adds a listener that listens for key events
 	setFocusable(true);
-
+	/**
+	 * Contains all of the balls in the game. Useful for spawning of multiple balls.
+	 */
 	balls = new ArrayList<>();
 	bricks = new Brick[ROWS][COLUMNS];
 	powers = new PowerUp[ROWS][COLUMNS];
@@ -291,15 +290,24 @@ public class GameBoard extends JPanel
     }
 
     /**
+     * Returns all of the balls in the game. Useful for spawning of multiple balls.
+     */
+    public List<Ball> getBalls() {
+	return balls;
+    }
+
+    /**
      * Controls the steering of the paddle. Extends KeyAdapter that is an abstract class for receiving keyboard commands.
      * KeyAdapter implements KeyListener
      */
     private class SteeringAdapter extends KeyAdapter {
 	@Override public void keyReleased(KeyEvent keyEvent) {
+	    super.keyReleased(keyEvent);
 	    paddle.keyReleased(keyEvent);
 	}
 
 	@Override public void keyPressed(KeyEvent keyEvent) {
+	    super.keyPressed(keyEvent);
 	    paddle.keyPressed(keyEvent);
 	}
     }
@@ -310,7 +318,7 @@ public class GameBoard extends JPanel
     class GameTask extends TimerTask {
 	public void run() {
 	    for (int ballIndex = 0; ballIndex < numberOfBalls; ballIndex++) {
-		balls.get(ballIndex).move();
+		getBalls().get(ballIndex).move();
 	    }
 	    paddle.move();
 	    for (int i = 0; i < ROWS; i++) {

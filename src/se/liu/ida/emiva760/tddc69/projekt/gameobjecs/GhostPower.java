@@ -16,14 +16,14 @@ public class GhostPower extends PowerUp
      */
     @Override
     public void usePowerUp() {
-	double oldXDir = gameBoard.balls.get(0).getXDir();
-	double oldYDir = gameBoard.balls.get(0).getYDir();
+	double oldXDir = gameBoard.getBalls().get(0).getXDir();
+	double oldYDir = gameBoard.getBalls().get(0).getYDir();
 
 	// Convert the ball
-	gameBoard.balls.set(0, new GhostBall(gameBoard.balls.get(0).getX(), gameBoard.balls.get(0).getY()));
+	gameBoard.getBalls().set(0, new GhostBall(gameBoard.getBalls().get(0).getX(), gameBoard.getBalls().get(0).getY()));
 
 	// Make sure that the ball moves in the same direction as before
-	gameBoard.balls.get(0).setXDir(oldXDir);
-	gameBoard.balls.get(0).setYDir(oldYDir);
+	gameBoard.getBalls().get(0).setXDir(oldXDir);
+	gameBoard.getBalls().get(0).setYDir(oldYDir);
     }
 }
