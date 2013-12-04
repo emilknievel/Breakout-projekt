@@ -21,7 +21,7 @@ public abstract class GameObject extends Point2D.Double
 	// Loads sprite URL from the spriteFileName
 	URL spriteUrl = getClass().getResource("/se/liu/ida/emiva760/tddc69/projekt/resources/" + spriteFileName);
 
-	ImageIcon icon = null;
+	ImageIcon icon;
 	if (spriteUrl != null) {
 	    icon = new ImageIcon(spriteUrl);
 	} else {

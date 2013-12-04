@@ -380,63 +380,63 @@ public class GameBoard extends JPanel
     /**
      * Destroy bricks neighboring to an explosive brick.
      */
-    private void destroyNeighbors(Brick[][] array, int i, int j) {
-	triggerPower(powers[i][j]);
+    private void destroyNeighbors(Brick[][] array, int y, int x) {
+	triggerPower(powers[y][x]);
 
-	array[i][j].blowUp();
+	array[y][x].blowUp();
 
-	if (isBlockAbove(array, i, j)) {
-	    if (array[i - 1][j].getType() == BrickType.EXPLOSIVE) {   // above explosive?
-		destroyNeighbors(array, i - 1, j);
+	if (isBlockAbove(array, y, x)) {
+	    if (array[y - 1][x].getType() == BrickType.EXPLOSIVE) {   // above explosive?
+		destroyNeighbors(array, y - 1, x);
 	    }
-	    array[i - 1][j].blowUp();
+	    array[y - 1][x].blowUp();
 	    score += 100;
-	    triggerPower(powers[i - 1][j]);
+	    triggerPower(powers[y - 1][x]);
 	}
 
-	if (isBlockBelow(array, i, j)) {
-	    if (array[i + 1][j].getType() == BrickType.EXPLOSIVE) {
-		destroyNeighbors(array, i + 1, j);
+	if (isBlockBelow(array, y, x)) {
+	    if (array[y + 1][x].getType() == BrickType.EXPLOSIVE) {
+		destroyNeighbors(array, y + 1, x);
 	    }
-	    array[i + 1][j].blowUp();
+	    array[y + 1][x].blowUp();
 	    score += 100;
-	    triggerPower(powers[i + 1][j]);
+	    triggerPower(powers[y + 1][x]);
 	}
 
-	if (isBlockLeft(array, i, j)) {
-	    if (array[i][j - 1].getType() == BrickType.EXPLOSIVE) {
-		destroyNeighbors(array, i, j - 1);
+	if (isBlockLeft(array, y, x)) {
+	    if (array[y][x - 1].getType() == BrickType.EXPLOSIVE) {
+		destroyNeighbors(array, y, x - 1);
 	    }
-	    array[i][j - 1].blowUp();
+	    array[y][x - 1].blowUp();
 	    score += 100;
-	    triggerPower(powers[i][j - 1]);
+	    triggerPower(powers[y][x - 1]);
 	}
 
-	if (isBlockRight(array, i, j)) {
-	    if (array[i][j + 1].getType() == BrickType.EXPLOSIVE) {
-		destroyNeighbors(array, i, j + 1);
+	if (isBlockRight(array, y, x)) {
+	    if (array[y][x + 1].getType() == BrickType.EXPLOSIVE) {
+		destroyNeighbors(array, y, x + 1);
 	    }
-	    array[i][j + 1].blowUp();
+	    array[y][x + 1].blowUp();
 	    score += 100;
-	    triggerPower(powers[i][j + 1]);
+	    triggerPower(powers[y][x + 1]);
 	}
     }
 
     // Functions to test whether there exists a brick next to the currently checked brick ////////////////////
-    private boolean isBlockAbove(Brick[][] array, int i, int j) {
-	return i > 0 && (!array[i - 1][j].isDestroyed());
+    private boolean isBlockAbove(Brick[][] array, int y, int x) {
+	return y > 0 && (!array[y - 1][x].isDestroyed());
     }
 
-    private boolean isBlockBelow(Brick[][] array, int i, int j) {
-	return i < 4 && (!array[i + 1][j].isDestroyed());
+    private boolean isBlockBelow(Brick[][] array, int y, int x) {
+	return y < ROWS - 1 && (!array[y + 1][x].isDestroyed());
     }
 
-    private boolean isBlockLeft(Brick[][] array, int i, int j) {
-	return j > 0 && (!array[i][j - 1].isDestroyed());
+    private boolean isBlockLeft(Brick[][] array, int y, int x) {
+	return x > 0 && (!array[y][x - 1].isDestroyed());
     }
 
-    private boolean isBlockRight(Brick[][] array, int i, int j) {
-	return j < 5 && (!array[i][j + 1].isDestroyed());
+    private boolean isBlockRight(Brick[][] array, int y, int x) {
+	return x < COLUMNS - 1 && (!array[y][x + 1].isDestroyed());
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 

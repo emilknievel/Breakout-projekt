@@ -5,8 +5,6 @@ package se.liu.ida.emiva760.tddc69.projekt;
  */
 public class SpriteNotFoundException extends RuntimeException
 {
-    public SpriteNotFoundException() {}
-
     public SpriteNotFoundException(String message) {
 	super(message);
     }
