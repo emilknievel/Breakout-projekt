@@ -1,5 +1,7 @@
 package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 
+import se.liu.ida.emiva760.tddc69.projekt.SpriteNotFoundException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -23,8 +25,8 @@ public abstract class GameObject extends Point2D.Double
 	if (spriteUrl != null) {
 	    icon = new ImageIcon(spriteUrl);
 	} else {
-	    // Tells the user that the file isn't found instead of just a nullpointer exception
-	    System.err.println("Couldn't find file: " + spriteFileName);
+	    // Throws and exception if the sprite image file is not found
+	    throw new SpriteNotFoundException("Sprite not found with name: " + spriteFileName);
 	}
 
 	sprite = icon.getImage();
