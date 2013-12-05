@@ -9,9 +9,9 @@ public abstract class Brick extends GameObject {
     protected int score; // The amount of points given to the player when the brick is destroyed
     protected BrickType type = null; // The type of brick
 
-    protected Brick(double x, double y, String brickType) {
+    protected Brick(double x, double y, String brickType, int health) {
 	super(x, y, brickType);
-
+	this.health = health;
 	destroyed = false;
     }
 

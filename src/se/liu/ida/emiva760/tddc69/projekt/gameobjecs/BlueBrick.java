@@ -6,8 +6,7 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 public class BlueBrick extends Brick
 {
     public BlueBrick(double x, double y) {
-	super(x, y, "bluebrick.png");
-	health = 0;
+	super(x, y, "bluebrick.png", 0);
 	type = BrickType.NORMAL;
 	score = 100;
     }
