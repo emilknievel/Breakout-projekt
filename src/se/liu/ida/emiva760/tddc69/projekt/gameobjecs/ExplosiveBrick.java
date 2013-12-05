@@ -6,8 +6,6 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 public class ExplosiveBrick extends Brick
 {
     public ExplosiveBrick(double x, double y) {
-	super(x, y, "explosivebrick.png", 1);
-	type = BrickType.EXPLOSIVE;
-	score = 100;
+	super(x, y, "explosivebrick.png", 1, BrickType.EXPLOSIVE, 100);
     }
 }

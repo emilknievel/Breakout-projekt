@@ -11,8 +11,9 @@ public abstract class Ball extends GameObject {
 
     protected BallType type = null; // The type of ball
 
-    protected Ball(double x, double y, String ballType) {
+    protected Ball(double x, double y, String ballType, BallType type) {
 	super(x, y, ballType); // ballType is the name of the sprite png file
+	this.type = type;
 	// The ball should move up-right when spawned.
 	xDir = 1;
 	yDir = -1;

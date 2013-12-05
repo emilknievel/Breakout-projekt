@@ -6,8 +6,6 @@ package se.liu.ida.emiva760.tddc69.projekt.gameobjecs;
 public class SolidBrick extends Brick
 {
     public SolidBrick(double x, double y) {
-	super(x, y, "solidbrick.png", 3);
-	type = BrickType.SOLID;
-	score = 50; // the number of points added when the brick is destroyed.
+	super(x, y, "solidbrick.png", 3, BrickType.SOLID, 50);
     }
 }
