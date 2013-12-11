@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.regex.Pattern;
 import javax.swing.*;
 
 /**
@@ -92,6 +93,11 @@ public class GameBoard extends JPanel
      * Offset for brick spawning so that there is space above the bricks
      */
     private static final int TOPSPACING = 30;
+
+    /**
+     * The different parts of every line in the highscore file will be separated by a comma. See readHighScores()
+     */
+    private static final Pattern COMPILE = Pattern.compile(",");
 
     /**
      * Used to control the game speed.
@@ -241,7 +247,11 @@ public class GameBoard extends JPanel
 	    return;
 	}
 	stopGame();
-	checkHighScores();
+	try {
+	    checkHighScores();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -588,24 +598,31 @@ public class GameBoard extends JPanel
 	lives--;
     }
 
-    public void writeHighScores(LinkedList<Score> scores, int playerScore, String playerName) {
-	try {
-	    BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"));
+    /**
+     * Writes the highscores from the score list to a separate file. The maximum amount of scores is 10.
+     * @param scores is the score list
+     * @param playerScore is the current player's score
+     * @param playerName is the current player's name
+     * @throws IOException
+     */
+    public void writeHighScores(LinkedList<Score> scores, int playerScore, String playerName) throws IOException {
+	try (BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"))) {
 
 	    if (!scores.isEmpty()) {
 		for (int i = 0; i < scores.size(); i++) {
 		    if (playerScore > scores.get(i).score) {
 			int playerRank = i + 1;
-			if (scores.size() < 10) {
+			if (scores.size() < 10) { // there is free space in the list for a new highscore
 			    scores.add(i, new Score(playerRank, playerName, playerScore));
 			    break;
-			} else {
+			} else { // if there already are 10 highscores, replace the last one with the current player's
 			    scores.removeLast();
 			    scores.add(i, new Score(playerRank, playerName, playerScore));
 			    break;
 			}
 		    }
 		}
+		// this is to make sure that there is always a new score added to the list if there is room for it
 		if (scores.size() < 10 && score < scores.peekLast().score) {
 		    scores.addLast(new Score((scores.peekLast().position + 1), playerName, playerScore));
 		}
@@ -620,36 +637,29 @@ public class GameBoard extends JPanel
 		    out.write(scores.get(i).position + "," + scores.get(i).name + "," + scores.get(i).score);
 		    out.newLine();
 		}
-	    } else {
+	    } else { // add the new score if the file is empty
 		scores.add(new Score(1, playerName, playerScore));
 	    }
 
-	    out.write(scores.get(scores.size() - 1).position + "," + scores.get(scores.size() - 1).name + "," + scores.get(scores.size() -1).score);
+	    out.write(scores.get(scores.size() - 1).position + "," + scores.get(scores.size() - 1).name + "," +
+		      scores.get(scores.size() - 1).score);
 
 	    out.close();
-
-	} catch (IOException e) {}
+	}
     }
 
     /**
-     * Reads highscores from the highscore file and stores them in a linked list.
-     * @throws IOException
+     * Reads highscores from the highscore file and stores them in a list.
+     * @param scores is the list of scores
      */
-    public void readHighScores(List<Score> scores) throws IOException {
+    public void readHighScores(List<Score> scores) throws IOException, FileNotFoundException {
+	try (BufferedReader br = new BufferedReader(new FileReader("highscore.txt"))) {
 
-	BufferedReader br = null;
-	try {
-	    br = new BufferedReader(new FileReader("highscore.txt"));
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-	}
-	try {
-	    assert br != null;
 	    String line = br.readLine();
 
 	    int i = 0;
 	    while (line != null) { // For each line in the file
-		String[] parts = line.split(","); // Divides the different parts of the line
+		String[] parts = COMPILE.split(line); // Divides the different parts of the line
 
 		// Put a new Score object into the array
 		scores.add(i, new Score(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2])));
@@ -657,14 +667,15 @@ public class GameBoard extends JPanel
 		i += 1;
 	    }
 
-	} catch (IOException e) {
-	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-	} finally {
-	    assert br != null;
 	    br.close();
 	}
     }
-    public String showHighscores() throws FileNotFoundException {
+
+    /**
+     * Builds a string from the score list
+     * @return the String containing the score info
+     */
+    public String showHighscores() {
 	StringBuilder stringBuilder = new StringBuilder("Highscores\n\nRank:\tName:\t\tScore:\n");
 
 	for (int i = 0; i < scoreList.size(); i++) {
@@ -678,18 +689,17 @@ public class GameBoard extends JPanel
 	return stringBuilder.toString();
     }
 
-    public void checkHighScores() {
+    /**
+     * Show the player the highscore list, using the score string
+     * @throws IOException
+     */
+    public void checkHighScores() throws IOException {
 	// Tell the player to enter his/her name if getting a place on the highscore list
 	if (scoreList.size() < 10 || score > scoreList.peekLast().score) {
 	    String name = JOptionPane.showInputDialog(null, "New highscore! Please enter your name.");
 	    writeHighScores(scoreList, score, name);
 	}
-	String highScoreString = null;
-	try {
-	    highScoreString = showHighscores();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-	}
+	String highScoreString = showHighscores();
 	JOptionPane.showMessageDialog(null, new JTextArea(highScoreString)); // in a JTextArea to fix alignment
     }
 }
