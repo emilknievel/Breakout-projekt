@@ -137,8 +137,6 @@ public class GameBoard extends JPanel
      * The list that contains the highscores
      */
     LinkedList<Score> scoreList = new LinkedList<>();
-    //List<Score> scoreList = new ArrayList<>();
-    //Score[] scoreArray = new Score[10];
 
     private static Random random = new Random();
 
@@ -483,7 +481,7 @@ public class GameBoard extends JPanel
 		}
 
 		if (blocksDestroyed == NUMBEROFBRICKS) {
-		    //message = "You win! ";
+		    message = "You win! ";
 		    stopGame();
 		}
 	    }
@@ -637,7 +635,7 @@ public class GameBoard extends JPanel
      * Reads highscores from the highscore file and stores them in a linked list.
      * @throws IOException
      */
-    public void readHighScores(LinkedList<Score> scores) throws IOException {
+    public void readHighScores(List<Score> scores) throws IOException {
 
 	BufferedReader br = null;
 	try {
@@ -646,6 +644,7 @@ public class GameBoard extends JPanel
 	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 	}
 	try {
+	    assert br != null;
 	    String line = br.readLine();
 
 	    int i = 0;
@@ -661,19 +660,18 @@ public class GameBoard extends JPanel
 	} catch (IOException e) {
 	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 	} finally {
+	    assert br != null;
 	    br.close();
 	}
     }
     public String showHighscores() throws FileNotFoundException {
-	StringBuilder stringBuilder = new StringBuilder();
-
-	//TODO: Fix alignment of the stringBuilder
+	StringBuilder stringBuilder = new StringBuilder("Highscores\n\nRank:\tName:\t\tScore:\n");
 
 	for (int i = 0; i < scoreList.size(); i++) {
 	    stringBuilder.append(scoreList.get(i).position);
-	    stringBuilder.append(". ");
+	    stringBuilder.append(".\t");
 	    stringBuilder.append(scoreList.get(i).name);
-	    stringBuilder.append(" ");
+	    stringBuilder.append("\t\t");
 	    stringBuilder.append(scoreList.get(i).score);
 	    stringBuilder.append("\n");
 	}
@@ -692,6 +690,6 @@ public class GameBoard extends JPanel
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 	}
-	JOptionPane.showMessageDialog(null, highScoreString/*, "Highscores", JOptionPane.OK_OPTION*/);
+	JOptionPane.showMessageDialog(null, new JTextArea(highScoreString)); // in a JTextArea to fix alignment
     }
 }
