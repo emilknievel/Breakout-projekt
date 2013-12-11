@@ -5,12 +5,16 @@ import se.liu.ida.emiva760.tddc69.projekt.gameobjecs.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Random;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * The Game Panel as well as the class that controls the game logic.
@@ -129,6 +133,13 @@ public class GameBoard extends JPanel
      */
     private String livesString = "Lives: " + Integer.toString(lives);
 
+    /**
+     * The list that contains the highscores
+     */
+    LinkedList<Score> scoreList = new LinkedList<>();
+    //List<Score> scoreList = new ArrayList<>();
+    //Score[] scoreArray = new Score[10];
+
     private static Random random = new Random();
 
     public GameBoard() {
@@ -146,6 +157,13 @@ public class GameBoard extends JPanel
 	// Delays the GameTask for a short while and specifies how fast the task updates.
 	gameTimer.scheduleAtFixedRate(new GameTask(), 500, 5); // 500 ms delay. 5 ms between ticks.
 	gameInit();
+
+	// Read the highscores from highscores.txt
+	try {
+	    readHighScores(scoreList);
+	} catch (IOException e) {
+	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	}
     }
 
     /**
@@ -225,6 +243,7 @@ public class GameBoard extends JPanel
 	    return;
 	}
 	stopGame();
+	checkHighScores();
     }
 
     /**
@@ -280,12 +299,9 @@ public class GameBoard extends JPanel
 
 	    g2.setColor(Color.BLACK);
 	    g2.setFont(endFont);
-	    g2.drawString(
-		    message + scoreString,
-		    (WIDTH -
-		     endMetrics.stringWidth(message + scoreString))/2,
-		    WIDTH /2);
+	    g2.drawString(message + scoreString, (WIDTH - endMetrics.stringWidth(message + scoreString)) / 2, WIDTH / 2);
 	}
+
 	g2.dispose();
     }
 
@@ -467,7 +483,7 @@ public class GameBoard extends JPanel
 		}
 
 		if (blocksDestroyed == NUMBEROFBRICKS) {
-		    message = "You win! ";
+		    //message = "You win! ";
 		    stopGame();
 		}
 	    }
@@ -572,5 +588,110 @@ public class GameBoard extends JPanel
 
     public void decrementLives() {
 	lives--;
+    }
+
+    public void writeHighScores(LinkedList<Score> scores, int playerScore, String playerName) {
+	try {
+	    BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"));
+
+	    if (!scores.isEmpty()) {
+		for (int i = 0; i < scores.size(); i++) {
+		    if (playerScore > scores.get(i).score) {
+			int playerRank = i + 1;
+			if (scores.size() < 10) {
+			    scores.add(i, new Score(playerRank, playerName, playerScore));
+			    break;
+			} else {
+			    scores.removeLast();
+			    scores.add(i, new Score(playerRank, playerName, playerScore));
+			    break;
+			}
+		    }
+		}
+		if (scores.size() < 10 && score < scores.peekLast().score) {
+		    scores.addLast(new Score((scores.peekLast().position + 1), playerName, playerScore));
+		}
+		// Update the position of the scores
+		for (int i = 0; i < scores.size(); i++) {
+		    Score temp = scores.get(i);
+		    temp.position = i + 1;
+		    scores.set(i, temp);
+		}
+
+		for (int i = 0; i < scores.size() - 1; i++) {
+		    out.write(scores.get(i).position + "," + scores.get(i).name + "," + scores.get(i).score);
+		    out.newLine();
+		}
+	    } else {
+		scores.add(new Score(1, playerName, playerScore));
+	    }
+
+	    out.write(scores.get(scores.size() - 1).position + "," + scores.get(scores.size() - 1).name + "," + scores.get(scores.size() -1).score);
+
+	    out.close();
+
+	} catch (IOException e) {}
+    }
+
+    /**
+     * Reads highscores from the highscore file and stores them in a linked list.
+     * @throws IOException
+     */
+    public void readHighScores(LinkedList<Score> scores) throws IOException {
+
+	BufferedReader br = null;
+	try {
+	    br = new BufferedReader(new FileReader("highscore.txt"));
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	}
+	try {
+	    String line = br.readLine();
+
+	    int i = 0;
+	    while (line != null) { // For each line in the file
+		String[] parts = line.split(","); // Divides the different parts of the line
+
+		// Put a new Score object into the array
+		scores.add(i, new Score(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2])));
+		line = br.readLine();
+		i += 1;
+	    }
+
+	} catch (IOException e) {
+	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	} finally {
+	    br.close();
+	}
+    }
+    public String showHighscores() throws FileNotFoundException {
+	StringBuilder stringBuilder = new StringBuilder();
+
+	//TODO: Fix alignment of the stringBuilder
+
+	for (int i = 0; i < scoreList.size(); i++) {
+	    stringBuilder.append(scoreList.get(i).position);
+	    stringBuilder.append(". ");
+	    stringBuilder.append(scoreList.get(i).name);
+	    stringBuilder.append(" ");
+	    stringBuilder.append(scoreList.get(i).score);
+	    stringBuilder.append("\n");
+	}
+	return stringBuilder.toString();
+    }
+
+    public void checkHighScores() {
+	// Tell the player to enter his/her name if getting a place on the highscore list
+	if (scoreList.size() < 10 || score > scoreList.peekLast().score) {
+	    String name = JOptionPane.showInputDialog(null, "New highscore! Please enter your name.");
+	    writeHighScores(scoreList, score, name);
+	}
+	String highScoreString = null;
+	try {
+	    highScoreString = showHighscores();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	}
+	JOptionPane.showMessageDialog(null, highScoreString/*, "Highscores", JOptionPane.OK_OPTION*/);
     }
 }
