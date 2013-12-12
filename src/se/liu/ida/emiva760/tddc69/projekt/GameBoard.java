@@ -247,11 +247,6 @@ public class GameBoard extends JPanel
 	    return;
 	}
 	stopGame();
-	try {
-	    checkHighScores();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
     }
 
     /**
@@ -372,6 +367,11 @@ public class GameBoard extends JPanel
     public void stopGame() {
 	gameRunning = false;
 	gameTimer.cancel();
+	try {
+	    checkHighScores();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
